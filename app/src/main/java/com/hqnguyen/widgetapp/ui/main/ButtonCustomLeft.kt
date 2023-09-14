@@ -2,10 +2,10 @@ package com.hqnguyen.widgetapp.ui.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -24,12 +25,12 @@ import androidx.compose.ui.unit.dp
 import com.hqnguyen.widgetapp.HeaderItems
 
 @Composable
-fun ButtonHeader(
+fun ButtonCustomLeft(
     modifier: Modifier = Modifier,
-    title: HeaderItems = HeaderItems.HOME,
+    title: String = "",
     colorContainer: Color = Color.Green,
     color: Color = Color.Red,
-    onClickHeaderItem: (item: HeaderItems) -> Unit = {}
+    onClickHeaderItem: (item: String) -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -38,18 +39,21 @@ fun ButtonHeader(
             .background(colorContainer)
             .padding(6.dp)
     ) {
-        Row {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Surface(
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .height(20.dp)
                     .width(4.dp),
-                color = color
+                color = color,
             ) {}
-
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = title.name,
+                modifier = Modifier.align(alignment = Alignment.CenterVertically),
+                text = title,
                 style = TextStyle(fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold)
             )
         }
@@ -60,5 +64,5 @@ fun ButtonHeader(
 @Preview
 @Composable
 fun ButtonHeaderPreview() {
-    ButtonHeader(title = HeaderItems.HOME)
+    ButtonCustomLeft(title = "HOME")
 }

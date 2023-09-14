@@ -2,10 +2,10 @@ package com.hqnguyen.widgetapp.ui.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -21,16 +22,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hqnguyen.widgetapp.HeaderItems
 import com.hqnguyen.widgetapp.HeaderSubItems
 
 @Composable
-fun ButtonSubHeader(
+fun ButtonCustomRight(
     modifier: Modifier = Modifier,
-    title: HeaderSubItems = HeaderSubItems.PLAN,
+    title: String = "",
     colorContainer: Color = Color.Green,
     color: Color = Color.Red,
-    onClickSubHeaderItem: (item: HeaderSubItems) -> Unit = {}
+    onClickSubHeaderItem: (item: String) -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -39,20 +39,23 @@ fun ButtonSubHeader(
             .background(colorContainer)
             .padding(6.dp)
     ) {
-        Row {
-
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
-                text = title.name,
+                text = title,
                 style = TextStyle(fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold)
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
             Surface(
-                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .height(20.dp)
-                    .width(4.dp),
+                    .width(4.dp)
+                    .align(alignment = Alignment.CenterVertically),
+                shape = RoundedCornerShape(16.dp),
                 color = color
             ) {}
 
@@ -64,5 +67,5 @@ fun ButtonSubHeader(
 @Preview
 @Composable
 fun ButtonSubHeaderPreview() {
-    ButtonSubHeader(title = HeaderSubItems.PLAN)
+    ButtonCustomRight(title = HeaderSubItems.PLAN.name)
 }
