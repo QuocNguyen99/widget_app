@@ -61,8 +61,10 @@ fun NavigationWidgetApp(navController: NavHostController) {
                 navigationApp(it, navController)
             }
         }
-        composable("add") {
+        composable("add/{type}") { backStackEntry ->
+            val type = backStackEntry.arguments?.getString("type")
             AddWidgetScreen(
+                type = type,
                 onNavigation = { navigationApp(it, navController) },
                 onBack = { navController.popBackStack() }
             )

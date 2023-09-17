@@ -1,6 +1,5 @@
 package com.hqnguyen.widgetapp.ui.page.home
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,6 +18,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,21 +36,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.hqnguyen.widgetapp.R
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hqnguyen.widgetapp.data.DefaultTemplate
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 
-val listDefaultTemplate = listOf<DefaultTemplate>(
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_birthday),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_wedding),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_study),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_birthday),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_wedding),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_study),
-)
-
 @Composable
-fun HomeScreen(onNavigate: (route: String) -> Unit = {}) {
+fun HomeScreen(
+    viewModel: HomeViewModel = viewModel(),
+    onNavigate: (route: String) -> Unit = {}
+) {
+    val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(key1 = true, block = {
+        viewModel.onEvent(HomeEvent.GetFirstData)
+    })
+
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -65,12 +67,10 @@ fun HomeScreen(onNavigate: (route: String) -> Unit = {}) {
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        listDefaultTemplate.forEach {
+        state.defaultTemplates.forEach { defaultTemplate ->
             CardGuide(
-                backgroundId = it.backgroundId,
-                title = it.title,
-                date = it.date,
-                onClick = { onNavigate("add") }
+                defaultTemplate = defaultTemplate,
+                onClick = { onNavigate("add/${defaultTemplate.type.name}") }
             )
         }
     }
@@ -79,11 +79,8 @@ fun HomeScreen(onNavigate: (route: String) -> Unit = {}) {
 @Composable
 fun CardGuide(
     modifier: Modifier = Modifier,
-    @DrawableRes backgroundId: Int = R.mipmap.bg_wedding,
-    title: String = "Kỷ niệm ngày cưới",
-    date: String = "15/08/2022",
-    onClick: (router: String) -> Unit = {},
-    route: String = ""
+    defaultTemplate: DefaultTemplate = DefaultTemplate(),
+    onClick: () -> Unit = {},
 ) {
     Card(
         elevation = CardDefaults.cardElevation(
@@ -95,7 +92,7 @@ fun CardGuide(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(true)
-            ) { onClick(route) }
+            ) { onClick() }
     ) {
         ConstraintLayout(
             modifier = Modifier
@@ -105,8 +102,8 @@ fun CardGuide(
             val (backgroundRef, infoRef) = createRefs()
 
             Image(
-                painter = painterResource(id = backgroundId),
-                contentDescription = title,
+                painter = painterResource(id = defaultTemplate.backgroundId),
+                contentDescription = defaultTemplate.title,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp)
@@ -126,12 +123,12 @@ fun CardGuide(
                 }
                 .padding(horizontal = 8.dp)) {
                 Text(
-                    title,
+                    defaultTemplate.title,
                     fontWeight = FontWeight.W700,
                     style = TextStyle(color = Color.White)
                 )
                 Text(
-                    date,
+                    defaultTemplate.date,
                     fontWeight = FontWeight.W300,
                     style = TextStyle(color = Color.White)
                 )

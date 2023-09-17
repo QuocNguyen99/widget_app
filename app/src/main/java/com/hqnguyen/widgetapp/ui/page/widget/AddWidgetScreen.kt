@@ -1,5 +1,6 @@
 package com.hqnguyen.widgetapp.ui.page.widget
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -13,13 +14,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.hqnguyen.widgetapp.data.TypeTemplate
 
 @Composable
-fun AddWidgetScreen(onNavigation: (router: String) -> Unit, onBack: () -> Unit) {
+fun AddWidgetScreen(
+    type: String?,
+    onNavigation: (router: String) -> Unit,
+    onBack: () -> Unit
+) {
+    LaunchedEffect(key1 = true, block = {
+        Log.d("AddWidgetScreen", "type: $type")
+    })
     Scaffold {
         Column(modifier = Modifier.padding(it)) {
             Header(onBack)

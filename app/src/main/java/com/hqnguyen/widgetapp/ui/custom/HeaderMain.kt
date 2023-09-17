@@ -78,7 +78,7 @@ fun TabHeader(onNavigate: (route: String) -> Unit) {
             }
         }
         when (tabIndex) {
-            0 -> HomeScreen(onNavigate)
+            0 -> HomeScreen(onNavigate =  onNavigate)
             1 -> EventScreen(onNavigate)
             2 -> HistoryScreen(onNavigate)
         }
