@@ -35,6 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import com.hqnguyen.widgetapp.ui.MainScreen
 import com.hqnguyen.widgetapp.ui.page.widget.AddWidgetScreen
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
+import kotlin.math.log
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -97,6 +98,7 @@ fun FloatingButton(currentPage: String? = "") {
 }
 
 fun navigationApp(router: String, navController: NavController) {
+    Log.d("navigationApp", "navigationApp: $router")
     if (router.isNotEmpty()) {
         navController.navigate(router)
     } else {

@@ -11,16 +11,16 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 val listDefaultTemplate = listOf(
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_birthday, TypeTemplate.BIRTHDAY),
+    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_birthday, TypeTemplate.BIRTHDAY.name),
     DefaultTemplate(
-        "Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_wedding, TypeTemplate.WEDDING_ANNIVERSARY
+        "Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_wedding, TypeTemplate.WEDDING_ANNIVERSARY.name
     ),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_study, TypeTemplate.STUDY),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_birthday, TypeTemplate.BIRTHDAY),
+    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_study, TypeTemplate.STUDY.name),
+    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_birthday, TypeTemplate.BIRTHDAY.name),
     DefaultTemplate(
-        "Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_wedding, TypeTemplate.WEDDING_ANNIVERSARY
+        "Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_wedding, TypeTemplate.WEDDING_ANNIVERSARY.name
     ),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_study, TypeTemplate.STUDY),
+    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_study, TypeTemplate.STUDY.name),
 )
 
 @HiltViewModel

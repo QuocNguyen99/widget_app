@@ -34,6 +34,13 @@ fun AddWidgetScreen(
         Column(modifier = Modifier.padding(it)) {
             Header(onBack)
         }
+
+        type?.let {
+            Log.d("AddWidgetScreen", "TypeTemplate.from(type): ${TypeTemplate.from(type)} ")
+            when (TypeTemplate.from(type)) {
+                else -> Unit
+            }
+        }
     }
 }
 

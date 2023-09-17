@@ -70,7 +70,7 @@ fun HomeScreen(
         state.defaultTemplates.forEach { defaultTemplate ->
             CardGuide(
                 defaultTemplate = defaultTemplate,
-                onClick = { onNavigate("add/${defaultTemplate.type.name}") }
+                onClick = { onNavigate("add/${defaultTemplate.type}") }
             )
         }
     }
