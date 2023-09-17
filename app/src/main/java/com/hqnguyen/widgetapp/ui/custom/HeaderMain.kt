@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.ui
+package com.hqnguyen.widgetapp.ui.custom
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -6,11 +6,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -24,10 +28,10 @@ import com.hqnguyen.widgetapp.ui.page.event.EventScreen
 import com.hqnguyen.widgetapp.ui.page.history.HistoryScreen
 import com.hqnguyen.widgetapp.ui.page.home.HomeScreen
 
-
 @Composable
-fun Header() {
-    Row(verticalAlignment = Alignment.CenterVertically,
+fun HeaderMain(onNavigate: (route: String) -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
@@ -39,13 +43,27 @@ fun Header() {
 }
 
 @Composable
-fun TabHeader() {
-    var tabIndex by remember { mutableStateOf(0) }
+fun TabHeader(onNavigate: (route: String) -> Unit) {
+    var tabIndex by remember { mutableIntStateOf(0) }
 
     val tabs = listOf("Home", "Event", "History")
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        TabRow(selectedTabIndex = tabIndex, containerColor = Color.White) {
+        TabRow(
+            selectedTabIndex = tabIndex,
+            containerColor = Color.White,
+            contentColor = Color(0xFF6ac5fe),
+            divider = { Divider(color = Color.LightGray) },
+            indicator = { tabPositions ->
+                if (tabIndex < tabPositions.size) {
+                    TabRowDefaults.Indicator(
+                        Modifier.tabIndicatorOffset(tabPositions[tabIndex]),
+                        color = Color(0xFF6ac5fe),
+                        height = 2.dp
+                    )
+                }
+            }
+        ) {
             tabs.forEachIndexed { index, title ->
                 Tab(
                     text = {
@@ -60,9 +78,9 @@ fun TabHeader() {
             }
         }
         when (tabIndex) {
-            0 -> HomeScreen()
-            1 -> EventScreen()
-            2 -> HistoryScreen()
+            0 -> HomeScreen(onNavigate)
+            1 -> EventScreen(onNavigate)
+            2 -> HistoryScreen(onNavigate)
         }
     }
 }

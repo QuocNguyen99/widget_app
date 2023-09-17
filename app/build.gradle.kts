@@ -69,6 +69,10 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 
     implementation(libs.androidx.material3.v111)
-    implementation (libs.androidx.constraintlayout.compose)
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.coil.compose)
 
+    implementation(libs.androidx.navigation.compose)
 }

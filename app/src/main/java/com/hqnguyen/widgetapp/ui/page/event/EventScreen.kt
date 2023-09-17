@@ -3,6 +3,6 @@ package com.hqnguyen.widgetapp.ui.page.event
 import androidx.compose.runtime.Composable
 
 @Composable
-fun EventScreen() {
+fun EventScreen(onNavigate: (route: String) -> Unit) {
     
 }
