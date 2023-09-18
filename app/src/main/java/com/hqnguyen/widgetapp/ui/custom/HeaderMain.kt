@@ -1,11 +1,14 @@
 package com.hqnguyen.widgetapp.ui.custom
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -13,9 +16,9 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -42,11 +45,21 @@ fun HeaderMain(onNavigate: (route: String) -> Unit) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabHeader(onNavigate: (route: String) -> Unit) {
-    var tabIndex by remember { mutableIntStateOf(0) }
-
     val tabs = listOf("Home", "Event", "History")
+
+    var tabIndex by remember { mutableIntStateOf(0) }
+    val pagerState = rememberPagerState { tabs.size }
+
+    LaunchedEffect(key1 = tabIndex) {
+        pagerState.animateScrollToPage(tabIndex)
+    }
+
+    LaunchedEffect(key1 = pagerState.currentPage) {
+        tabIndex = pagerState.currentPage
+    }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         TabRow(
@@ -77,10 +90,15 @@ fun TabHeader(onNavigate: (route: String) -> Unit) {
                 )
             }
         }
-        when (tabIndex) {
-            0 -> HomeScreen(onNavigate =  onNavigate)
-            1 -> EventScreen(onNavigate)
-            2 -> HistoryScreen(onNavigate)
+
+        HorizontalPager(
+            state = pagerState
+        ) {
+            when (it) {
+                0 -> HomeScreen(onNavigate = onNavigate)
+                1 -> EventScreen(onNavigate)
+                2 -> HistoryScreen(onNavigate)
+            }
         }
     }
 }

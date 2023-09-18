@@ -36,13 +36,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hqnguyen.widgetapp.data.DefaultTemplate
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = viewModel(),
+    viewModel: HomeViewModel = hiltViewModel(),
     onNavigate: (route: String) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()

@@ -32,7 +32,6 @@ fun AddWidgetScreen(
     })
     Scaffold {
         Column(modifier = Modifier.padding(it)) {
-            Header(onBack)
         }
 
         type?.let {
@@ -41,19 +40,5 @@ fun AddWidgetScreen(
                 else -> Unit
             }
         }
-    }
-}
-
-@Composable
-fun Header(onBack: () -> Unit) {
-    Row {
-        Icon(imageVector = Icons.Default.Close, "",
-            modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(true)
-                ) { onBack() })
-        Text("Add Widget Screen")
     }
 }
