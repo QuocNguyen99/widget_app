@@ -60,17 +60,15 @@ fun WidgetApp() {
         AppBar(currentPage?.destination?.route, navController)
     }, floatingActionButton = {
         FloatingButton(currentPage?.destination?.route)
-    }) {
+    }) { padding ->
         Surface(color = Color(0xFFF5F5F5)) {
-            NavigationWidgetApp(navController)
+            NavigationWidgetApp(navController, Modifier.padding(padding))
         }
     }
-
 }
 
 @Composable
-fun NavigationWidgetApp(navController: NavHostController) {
-
+fun NavigationWidgetApp(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(navController = navController, startDestination = "main") {
         composable(NavItem.MAIN.router) {
             MainScreen {
@@ -82,7 +80,8 @@ fun NavigationWidgetApp(navController: NavHostController) {
             AddWidgetScreen(
                 type = type,
                 onNavigation = { navigationApp(it, navController) },
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                modifier = modifier
             )
         }
     }
