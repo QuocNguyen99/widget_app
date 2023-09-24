@@ -17,12 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TextSizeEdit() {
-    var sliderPosition by remember { mutableFloatStateOf(0f) }
+fun TextSizeEdit(defaultTextSize: Float, updateCurrentTexSize: (size: Float) -> Unit) {
+    var sliderPosition by remember { mutableFloatStateOf(defaultTextSize) }
 
     Text(
         text = "Font size",
@@ -35,7 +36,12 @@ fun TextSizeEdit() {
     ) {
         Slider(
             value = sliderPosition,
-            onValueChange = { sliderPosition = it },
+            valueRange = 9f..14f,
+            steps = 5,
+            onValueChange = {
+                sliderPosition = it
+                updateCurrentTexSize(it)
+            },
             colors = SliderDefaults.colors(
                 thumbColor = Color(0xFF6ac5fe),
                 activeTrackColor = Color(0xFF6ac5fe),

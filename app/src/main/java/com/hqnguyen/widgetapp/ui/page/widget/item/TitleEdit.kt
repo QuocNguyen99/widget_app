@@ -1,5 +1,7 @@
 package com.hqnguyen.widgetapp.ui.page.widget.item
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TitleEdit() {
+fun TitleEdit(
+    updateCurrentTitle: (title: String) -> Unit,
+) {
     Text(
         text = "Title",
         style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp)
@@ -42,17 +46,24 @@ fun TitleEdit() {
         Surface(
             modifier = Modifier
                 .fillMaxWidth(),
+            color = Color.White
         ) {
             OutlinedTextField(
                 value = text,
-                onValueChange = { text = it },
-                placeholder = { Text("Input your text") },
+                onValueChange = {
+                    text = it
+                    updateCurrentTitle(it)
+                },
+                placeholder = { Text("Who's birthday?") },
                 trailingIcon = {
                     if (text.isNotEmpty())
                         Icon(
                             Icons.Filled.Close,
                             contentDescription = "Localized description",
-                            modifier = Modifier.clickable { text = "" }
+                            modifier = Modifier.clickable {
+                                text = ""
+                                updateCurrentTitle("Who's birthday?")
+                            }
                         )
                 },
                 colors = OutlinedTextFieldDefaults.colors(
@@ -61,7 +72,11 @@ fun TitleEdit() {
                 ),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .border(
+                        border = BorderStroke(1.dp, Color.LightGray),
+                        shape = RoundedCornerShape(16.dp)
+                    ),
             )
         }
     }

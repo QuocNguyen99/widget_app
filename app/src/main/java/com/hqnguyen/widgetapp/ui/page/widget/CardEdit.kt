@@ -13,7 +13,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.hqnguyen.widgetapp.ui.page.widget.item.BackgroundEdit
 import com.hqnguyen.widgetapp.ui.page.widget.item.DateEdit
 import com.hqnguyen.widgetapp.ui.page.widget.item.SizeEdit
@@ -22,7 +25,16 @@ import com.hqnguyen.widgetapp.ui.page.widget.item.TextSizeEdit
 import com.hqnguyen.widgetapp.ui.page.widget.item.TitleEdit
 
 @Composable
-fun CardEdit(modifier: Modifier = Modifier, onClickCardSize: (index: Int) -> Unit) {
+fun CardEdit(
+    modifier: Modifier = Modifier,
+    currentTextSize: Float = 9F,
+    currentTextColor: Int = Color.White.toArgb(),
+    updateCurrentTitle: (title: String) -> Unit,
+    updateCurrentDate: (milliseconds: Long) -> Unit,
+    updateCurrentTexSize: (size: Float) -> Unit,
+    updateCurrentTextColor: (color: Color) -> Unit,
+    onClickCardSize: (index: Int) -> Unit
+) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
@@ -35,10 +47,10 @@ fun CardEdit(modifier: Modifier = Modifier, onClickCardSize: (index: Int) -> Uni
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
         ) {
-            TitleEdit()
+            TitleEdit(updateCurrentTitle)
             Spacer(modifier = Modifier.height(16.dp))
 
-            DateEdit()
+            DateEdit(updateCurrentDate)
             Spacer(modifier = Modifier.height(16.dp))
 
             SizeEdit(onClickCardSize)
@@ -47,10 +59,10 @@ fun CardEdit(modifier: Modifier = Modifier, onClickCardSize: (index: Int) -> Uni
             BackgroundEdit()
             Spacer(modifier = Modifier.height(16.dp))
 
-            TextSizeEdit()
+            TextSizeEdit(currentTextSize, updateCurrentTexSize)
             Spacer(modifier = Modifier.height(16.dp))
 
-            TextColorEdit()
+            TextColorEdit(currentTextColor, updateCurrentTextColor)
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
