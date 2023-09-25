@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.ui.page.home
+package com.hqnguyen.widgetapp.presentation.page.home
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.ui.page.event
+package com.hqnguyen.widgetapp.presentation.page.event
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface

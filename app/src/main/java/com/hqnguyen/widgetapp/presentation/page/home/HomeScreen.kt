@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.ui.page.home
+package com.hqnguyen.widgetapp.presentation.page.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

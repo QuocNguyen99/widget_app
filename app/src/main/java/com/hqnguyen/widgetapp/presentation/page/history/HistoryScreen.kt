@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.ui.page.history
+package com.hqnguyen.widgetapp.presentation.page.history
 
 import androidx.compose.runtime.Composable
 

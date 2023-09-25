@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.ui.page.widget.item
+package com.hqnguyen.widgetapp.presentation.page.widget
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -20,18 +20,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.hqnguyen.widgetapp.R
+import com.hqnguyen.widgetapp.presentation.page.widget.item.listCards
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
 fun CardImage(
     screenWidth: Dp,
-    indexSizeList: Int,
-    currentTitle: String,
-    currentDate: Long,
+    indexSizeList: Int = 0,
+    currentTitle: String = "Hello",
+    currentDate: Long = System.currentTimeMillis(),
     currentSizeText: Float = 9F,
     currentColorText: Int = Color.White.toArgb(),
-    modifier: Modifier = Modifier,
 ) {
     Log.d("CardImage", "title: $currentDate -- date: $currentDate indexSize: $indexSizeList")
 

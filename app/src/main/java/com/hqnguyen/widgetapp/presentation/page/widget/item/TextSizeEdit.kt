@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.ui.page.widget.item
+package com.hqnguyen.widgetapp.presentation.page.widget.item
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

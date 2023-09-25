@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.ui.custom
+package com.hqnguyen.widgetapp.presentation.custom
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -27,9 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.hqnguyen.widgetapp.ui.page.event.EventScreen
-import com.hqnguyen.widgetapp.ui.page.history.HistoryScreen
-import com.hqnguyen.widgetapp.ui.page.home.HomeScreen
+import com.hqnguyen.widgetapp.presentation.page.event.EventScreen
+import com.hqnguyen.widgetapp.presentation.page.history.HistoryScreen
+import com.hqnguyen.widgetapp.presentation.page.home.HomeScreen
 
 @Composable
 fun HeaderMain(onNavigate: (route: String) -> Unit) {

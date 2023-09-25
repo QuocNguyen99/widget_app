@@ -46,7 +46,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.hqnguyen.widgetapp.data.NavItem
 import com.hqnguyen.widgetapp.ui.MainScreen
-import com.hqnguyen.widgetapp.ui.page.widget.AddWidgetScreen
+import com.hqnguyen.widgetapp.presentation.page.widget.AddWidgetScreen
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 import kotlin.math.log
 

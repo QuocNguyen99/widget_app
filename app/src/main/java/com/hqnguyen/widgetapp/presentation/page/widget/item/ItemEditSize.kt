@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.ui.page.widget.item
+package com.hqnguyen.widgetapp.presentation.page.widget.item
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
