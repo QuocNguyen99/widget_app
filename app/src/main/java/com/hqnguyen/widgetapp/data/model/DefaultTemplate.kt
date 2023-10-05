@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.data
+package com.hqnguyen.widgetapp.data.model
 
 import androidx.annotation.DrawableRes
 import com.hqnguyen.widgetapp.R

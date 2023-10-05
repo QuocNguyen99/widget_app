@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.data
+package com.hqnguyen.widgetapp.data.model
 
 enum class NavItem(val title: String, val router: String) {
     MAIN("Home", "main"),

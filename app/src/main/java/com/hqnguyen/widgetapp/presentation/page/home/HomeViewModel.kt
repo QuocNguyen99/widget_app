@@ -3,8 +3,8 @@ package com.hqnguyen.widgetapp.presentation.page.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.hqnguyen.widgetapp.R
-import com.hqnguyen.widgetapp.data.DefaultTemplate
-import com.hqnguyen.widgetapp.data.TypeTemplate
+import com.hqnguyen.widgetapp.data.model.DefaultTemplate
+import com.hqnguyen.widgetapp.data.model.TypeTemplate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
