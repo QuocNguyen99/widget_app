@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.presentation.page.widget.item
+package com.hqnguyen.widgetapp.presentation.page.widget.add.item
 
 import androidx.compose.runtime.Composable
 

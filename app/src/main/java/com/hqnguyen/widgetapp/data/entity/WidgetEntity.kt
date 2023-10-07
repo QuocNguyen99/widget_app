@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class WidgetEntity(
     @PrimaryKey
     var id: String = "",
+    var title: String = "",
     var size: Int? = null,
     var date: Long? = null,
     var colorText: Int? = null,

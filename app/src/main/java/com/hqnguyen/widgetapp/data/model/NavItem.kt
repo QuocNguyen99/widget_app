@@ -2,7 +2,7 @@ package com.hqnguyen.widgetapp.data.model
 
 enum class NavItem(val title: String, val router: String) {
     MAIN("Home", "main"),
-    ADD("Add Content", "add/{type}");
+    ADD("Add Content", "add/{id}");
 
     companion object {
         fun findEnumByRouter(router: String?): NavItem? {

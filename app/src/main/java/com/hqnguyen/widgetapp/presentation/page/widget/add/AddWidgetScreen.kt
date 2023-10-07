@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.presentation.page.widget
+package com.hqnguyen.widgetapp.presentation.page.widget.add
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -25,15 +25,18 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 
 @Composable
 fun AddWidgetScreen(
-    type: String? = "",
+    viewModel: WidgetViewModel = hiltViewModel(),
+    id: Long? = -1L,
     onNavigation: (router: String) -> Unit = {},
     onBack: () -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
+    val TAG = "AddWidgetScreen"
     val configuration = LocalConfiguration.current
     val defaultTextSize: Float = 9F
 
@@ -67,7 +70,10 @@ fun AddWidgetScreen(
     }
 
     LaunchedEffect(key1 = true, block = {
-        Log.d("AddWidgetScreen", "type: $type")
+        Log.d(TAG, "id: $id")
+        if (id != null && id.toLong() != -1L) {
+            viewModel.handleEvents(WidgetEvent.FetchInfoWidget(id.toLong()))
+        }
     })
 
     Column(

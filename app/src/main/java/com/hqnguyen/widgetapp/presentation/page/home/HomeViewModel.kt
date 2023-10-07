@@ -11,14 +11,17 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 val listDefaultTemplate = listOf(
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_birthday, TypeTemplate.BIRTHDAY.name),
     DefaultTemplate(
-        "Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_wedding, TypeTemplate.WEDDING_ANNIVERSARY.name
+        "Kỷ niệm ngày cưới",
+        "15/08/2022",
+        R.mipmap.bg_birthday,
+        TypeTemplate.BIRTHDAY.name
     ),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_study, TypeTemplate.STUDY.name),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_birthday, TypeTemplate.BIRTHDAY.name),
     DefaultTemplate(
-        "Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_wedding, TypeTemplate.WEDDING_ANNIVERSARY.name
+        "Kỷ niệm ngày cưới",
+        "15/08/2022",
+        R.mipmap.bg_wedding,
+        TypeTemplate.WEDDING_ANNIVERSARY.name
     ),
     DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_study, TypeTemplate.STUDY.name),
 )
@@ -32,12 +35,11 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     fun onEvent(event: HomeEvent) {
         Log.d(TAG, "onEvent: $event")
         when (event) {
-            HomeEvent.GetFirstData -> {
+            is HomeEvent.GetFirstData -> {
                 _state.update {
                     it.copy(defaultTemplates = listDefaultTemplate)
                 }
             }
-
             else -> Unit
         }
     }

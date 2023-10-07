@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.presentation.page.widget
+package com.hqnguyen.widgetapp.presentation.page.widget.add
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.hqnguyen.widgetapp.R
-import com.hqnguyen.widgetapp.presentation.page.widget.item.listCards
+import com.hqnguyen.widgetapp.presentation.page.widget.add.item.listCards
 import java.text.SimpleDateFormat
 import java.util.Locale
 

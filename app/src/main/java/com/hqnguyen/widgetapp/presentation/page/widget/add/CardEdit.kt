@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.presentation.page.widget
+package com.hqnguyen.widgetapp.presentation.page.widget.add
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,12 +17,12 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hqnguyen.widgetapp.presentation.page.widget.item.BackgroundEdit
-import com.hqnguyen.widgetapp.presentation.page.widget.item.DateEdit
-import com.hqnguyen.widgetapp.presentation.page.widget.item.SizeEdit
-import com.hqnguyen.widgetapp.presentation.page.widget.item.TextColorEdit
-import com.hqnguyen.widgetapp.presentation.page.widget.item.TextSizeEdit
-import com.hqnguyen.widgetapp.presentation.page.widget.item.TitleEdit
+import com.hqnguyen.widgetapp.presentation.page.widget.add.item.BackgroundEdit
+import com.hqnguyen.widgetapp.presentation.page.widget.add.item.DateEdit
+import com.hqnguyen.widgetapp.presentation.page.widget.add.item.SizeEdit
+import com.hqnguyen.widgetapp.presentation.page.widget.add.item.TextColorEdit
+import com.hqnguyen.widgetapp.presentation.page.widget.add.item.TextSizeEdit
+import com.hqnguyen.widgetapp.presentation.page.widget.add.item.TitleEdit
 
 @Composable
 fun CardEdit(

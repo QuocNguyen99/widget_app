@@ -33,5 +33,4 @@ class AppModule {
     @Singleton
     fun providesWidgetRepository(widgetDAO: WidgetDAO): WidgetRepository =
         WidgetRepository(widgetDAO)
-
 }

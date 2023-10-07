@@ -11,12 +11,10 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,7 +41,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.hqnguyen.widgetapp.data.model.NavItem
 import com.hqnguyen.widgetapp.ui.MainScreen
-import com.hqnguyen.widgetapp.presentation.page.widget.AddWidgetScreen
+import com.hqnguyen.widgetapp.presentation.page.widget.add.AddWidgetScreen
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -55,7 +53,7 @@ fun WidgetApp() {
     Scaffold(topBar = {
         AppBar(currentPage?.destination?.route, navController)
     }, floatingActionButton = {
-        FloatingButton(currentPage?.destination?.route)
+        FloatingButton(currentPage?.destination?.route, navController)
     }) { padding ->
         Surface(color = Color(0xFFF5F5F5)) {
             NavigationWidgetApp(navController, Modifier.padding(padding))
@@ -72,9 +70,9 @@ fun NavigationWidgetApp(navController: NavHostController, modifier: Modifier = M
             }
         }
         composable(NavItem.ADD.router) { backStackEntry ->
-            val type = backStackEntry.arguments?.getString("type")
+            val id = backStackEntry.arguments?.getString("id")?.toLong()
             AddWidgetScreen(
-                type = type,
+                id = id,
                 onNavigation = { navigationApp(it, navController) },
                 onBack = { navController.popBackStack() },
                 modifier = modifier
@@ -84,7 +82,7 @@ fun NavigationWidgetApp(navController: NavHostController, modifier: Modifier = M
 }
 
 @Composable
-fun FloatingButton(currentPage: String? = "") {
+fun FloatingButton(currentPage: String? = "", navController: NavController) {
     AnimatedVisibility(
         visible = currentPage == NavItem.MAIN.router,
         enter = slideInVertically(animationSpec = tween(durationMillis = 1000)) { it } + fadeIn(
@@ -97,7 +95,7 @@ fun FloatingButton(currentPage: String? = "") {
             containerColor = Color(0xFF6ac5fe),
             contentColor = Color.White,
             shape = CircleShape,
-            onClick = { },
+            onClick = { navController.navigate("add/-1") },
         ) {
             Icon(
                 Icons.Filled.Add,
@@ -158,7 +156,6 @@ fun navigationApp(router: String, navController: NavController) {
         Log.e("navigationApp", "error: router is not defined")
     }
 }
-
 
 @Preview
 @Composable
