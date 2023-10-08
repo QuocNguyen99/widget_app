@@ -1,5 +1,7 @@
 package com.hqnguyen.widgetapp.presentation.page.widget.add.item
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -38,15 +40,17 @@ import androidx.compose.ui.unit.sp
 import com.hqnguyen.widgetapp.R
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateEdit(updateCurrentDate: (milliseconds: Long) -> Unit = {}) {
     val calendar = Calendar.getInstance()
-    calendar.set(1990, 0, 22)
+    calendar.set(LocalDate.now().year, LocalDate.now().monthValue - 1, LocalDate.now().dayOfMonth)
 
     val datePickerState =
         rememberDatePickerState(initialSelectedDateMillis = System.currentTimeMillis())
@@ -127,6 +131,7 @@ fun DateEdit(updateCurrentDate: (milliseconds: Long) -> Unit = {}) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun DateEditPreview() {

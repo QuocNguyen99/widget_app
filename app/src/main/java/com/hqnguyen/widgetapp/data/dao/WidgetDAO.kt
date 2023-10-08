@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.hqnguyen.widgetapp.data.entity.WidgetEntity
 import com.hqnguyen.widgetapp.data.model.WidgetInfo
 import kotlinx.coroutines.flow.Flow
 
@@ -13,11 +14,11 @@ interface WidgetDAO {
     fun getAllWidget(): List<WidgetInfo>
 
     @Insert
-    fun insertWidget(widget: WidgetInfo)
+    fun insertWidget(widget: WidgetEntity)
 
     @Query("SELECT * FROM widget WHERE id = :id")
     suspend fun getWidget(id: Long): WidgetInfo
 
-    @Delete
+    @Query("DELETE FROM widget WHERE id = :id")
     fun deleteWidget(id: Long)
 }

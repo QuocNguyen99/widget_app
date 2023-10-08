@@ -1,6 +1,8 @@
 [versions]
-agp = "8.3.0-alpha04"
+agp = "8.3.0-alpha07"
 androidx-material3 = "1.1.2"
+androidx-room-compiler = "2.5.2"
+androidx-room-room-compiler = "2"
 coil-compose = "2.4.0"
 constraintlayout = "2.2.0-alpha12"
 constraintlayout-compose = "1.0.1"
@@ -16,12 +18,15 @@ androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 kotlinx-coroutines-android = "1.7.1"
 lifecycle-runtime-ktx = "2.6.2"
-activity-compose = "1.7.2"
-compose-bom = "2023.09.00"
-material3 = "1.2.0-alpha08"
+activity-compose = "1.8.0"
+compose-bom = "2023.10.00"
+lottie-compose = "6.0.1"
+material3 = "1.2.0-alpha09"
 accompanist-systemuicontroller = "0.27.0"
 material = "1.5.1"
 navigation-compose = "2.7.3"
+room-compiler = "2.5.2"
+room-ktx = "2.5.2"
 
 [libraries]
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
@@ -34,6 +39,11 @@ androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-view
 androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 androidx-material3-v111 = { module = "androidx.compose.material3:material3", version.ref = "androidx-material3" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-compiler" }
+androidx-room-compiler-v2 = { module = "androidx.room:room-compiler", version.ref = "androidx-room-room-compiler" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-ktx" }
+androidx-room-room-compiler2 = { module = "androidx.room:room-compiler", version.ref = "androidx-room-compiler" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-ktx" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android-compiler" }
@@ -45,6 +55,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }

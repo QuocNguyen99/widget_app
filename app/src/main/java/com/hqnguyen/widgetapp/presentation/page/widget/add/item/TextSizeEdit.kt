@@ -36,7 +36,7 @@ fun TextSizeEdit(defaultTextSize: Float, updateCurrentTexSize: (size: Float) -> 
     ) {
         Slider(
             value = sliderPosition,
-            valueRange = 9f..14f,
+            valueRange = 9f..18f,
             steps = 5,
             onValueChange = {
                 sliderPosition = it

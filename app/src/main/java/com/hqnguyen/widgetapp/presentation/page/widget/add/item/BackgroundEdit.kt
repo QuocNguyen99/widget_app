@@ -1,8 +1,10 @@
 package com.hqnguyen.widgetapp.presentation.page.widget.add.item
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +30,9 @@ import androidx.compose.ui.unit.sp
 import com.hqnguyen.widgetapp.R
 
 @Composable
-fun BackgroundEdit() {
+fun BackgroundEdit(
+    onClickPhoto: () -> Unit, onClickDefaultPhoto: () -> Unit
+) {
     Text(
         text = "Background",
         style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp)
@@ -39,7 +43,7 @@ fun BackgroundEdit() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        ItemEditBackground("Background", R.mipmap.bg_wedding)
+        ItemEditBackground(type = 0, "Background", R.mipmap.bg_wedding, onClickPhoto = onClickPhoto)
         Spacer(modifier = Modifier.width(16.dp))
         Box(
             modifier = Modifier
@@ -48,14 +52,25 @@ fun BackgroundEdit() {
                 .background(Color.LightGray)
         )
         Spacer(modifier = Modifier.width(22.dp))
-        ItemEditBackground("Effect", R.mipmap.bg_birthday)
+        ItemEditBackground(type = 1, "Effect", R.mipmap.bg_birthday)
         Spacer(modifier = Modifier.width(22.dp))
-        ItemEditBackground("Default", R.mipmap.bg_study)
+        ItemEditBackground(
+            type = 2,
+            "Default",
+            R.mipmap.bg_study,
+            onClickDefaultPhoto = onClickDefaultPhoto
+        )
     }
 }
 
 @Composable
-fun ItemEditBackground(title: String, @DrawableRes idBackground: Int) {
+fun ItemEditBackground(
+    type: Int,
+    title: String,
+    @DrawableRes idBackground: Int,
+    onClickPhoto: () -> Unit = {},
+    onClickDefaultPhoto: () -> Unit = {}
+) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
             painter = painterResource(id = idBackground),
@@ -64,6 +79,14 @@ fun ItemEditBackground(title: String, @DrawableRes idBackground: Int) {
             modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape)
+                .clickable {
+                    Log.d("ItemEditBackground", "ItemEditBackground: $type")
+                    when (type) {
+                        0 -> onClickPhoto()
+                        1 -> {}
+                        2 -> onClickDefaultPhoto()
+                    }
+                }
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(

@@ -1,5 +1,7 @@
 package com.hqnguyen.widgetapp.presentation.page.widget.add
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +26,7 @@ import com.hqnguyen.widgetapp.presentation.page.widget.add.item.TextColorEdit
 import com.hqnguyen.widgetapp.presentation.page.widget.add.item.TextSizeEdit
 import com.hqnguyen.widgetapp.presentation.page.widget.add.item.TitleEdit
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CardEdit(
     modifier: Modifier = Modifier,
@@ -33,7 +36,9 @@ fun CardEdit(
     updateCurrentDate: (milliseconds: Long) -> Unit,
     updateCurrentTexSize: (size: Float) -> Unit,
     updateCurrentTextColor: (color: Color) -> Unit,
-    onClickCardSize: (index: Int) -> Unit
+    onClickCardSize: (index: Int) -> Unit,
+    openPhotoPicker: () -> Unit,
+    onClickDefaultPhoto: () -> Unit
 ) {
     Card(
         modifier = modifier,
@@ -56,7 +61,7 @@ fun CardEdit(
             SizeEdit(onClickCardSize)
             Spacer(modifier = Modifier.height(16.dp))
 
-            BackgroundEdit()
+            BackgroundEdit(openPhotoPicker, onClickDefaultPhoto)
             Spacer(modifier = Modifier.height(16.dp))
 
             TextSizeEdit(currentTextSize, updateCurrentTexSize)
