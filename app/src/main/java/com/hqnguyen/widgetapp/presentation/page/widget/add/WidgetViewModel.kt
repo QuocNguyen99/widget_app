@@ -63,7 +63,7 @@ class WidgetViewModel @Inject constructor(private val widgetRepository: WidgetRe
                         textSize = widgetInfo.sizeText,
                         date = widgetInfo.date,
                         textColor = Color.BLACK,
-                        pathImage = widgetInfo.imagePath.toUri()
+                        pathImage = if(widgetInfo.imagePath != null) widgetInfo.imagePath!!.toUri() else null
                     )
                 )
             } catch (ex: Exception) {
@@ -124,7 +124,7 @@ class WidgetViewModel @Inject constructor(private val widgetRepository: WidgetRe
         viewModelScope.launch {
             showLoading(true)
             try {
-                widgetRepository.s
+//                widgetRepository
             }catch (ex:Exception){
 
             }
