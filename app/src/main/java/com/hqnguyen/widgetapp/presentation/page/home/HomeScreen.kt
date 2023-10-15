@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -36,8 +37,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hqnguyen.widgetapp.data.model.DefaultTemplate
+import com.hqnguyen.widgetapp.presentation.custom.HeaderMain
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 
 @Composable
@@ -52,9 +55,10 @@ fun HomeScreen(
     })
 
     Column(
-        modifier = Modifier.verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).background(Color("#F5F5F5".toColorInt())),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        HeaderMain()
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             "Chọn chủ đề bạn muốn hoặc tự tạo chủ đề",

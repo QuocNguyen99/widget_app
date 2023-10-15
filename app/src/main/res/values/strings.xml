@@ -2,4 +2,7 @@
     <string name="app_name">WidgetApp</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
+    <string name="home_screen">Home</string>
+    <string name="event_screen">Event</string>
+    <string name="setting_screen">Setting</string>
 </resources>

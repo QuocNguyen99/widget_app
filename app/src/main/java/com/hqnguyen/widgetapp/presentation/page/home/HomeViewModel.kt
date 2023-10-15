@@ -15,15 +15,17 @@ val listDefaultTemplate = listOf(
         "Kỷ niệm ngày cưới",
         "15/08/2022",
         R.mipmap.bg_birthday,
-        TypeTemplate.BIRTHDAY.name
+        TypeTemplate.BIRTHDAY.ordinal
     ),
     DefaultTemplate(
         "Kỷ niệm ngày cưới",
         "15/08/2022",
         R.mipmap.bg_wedding,
-        TypeTemplate.WEDDING_ANNIVERSARY.name
+        TypeTemplate.WEDDING_ANNIVERSARY.ordinal
     ),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022", R.mipmap.bg_study, TypeTemplate.STUDY.name),
+    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022",
+        R.mipmap.bg_study,
+        TypeTemplate.STUDY.ordinal),
 )
 
 @HiltViewModel
@@ -40,6 +42,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     it.copy(defaultTemplates = listDefaultTemplate)
                 }
             }
+
             else -> Unit
         }
     }

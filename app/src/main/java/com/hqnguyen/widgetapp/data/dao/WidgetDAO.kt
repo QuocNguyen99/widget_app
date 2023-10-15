@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WidgetDAO {
     @Query("SELECT * FROM widget")
-    fun getAllWidget(): List<WidgetInfo>
+    fun getAllWidget(): Flow<List<WidgetEntity>>
 
     @Insert
-    fun insertWidget(widget: WidgetEntity)
+    suspend fun insertWidget(widget: WidgetEntity)
 
     @Query("SELECT * FROM widget WHERE id = :id")
     suspend fun getWidget(id: Long): WidgetInfo

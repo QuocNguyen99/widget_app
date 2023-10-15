@@ -15,4 +15,5 @@ data class WidgetState(
     var textSize: Float = 9f,
     var sizeCard: Int = 0,
     var textColor: Int = Color.White.toArgb(),
+    var isSaveComplete: Boolean = false
 )

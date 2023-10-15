@@ -9,7 +9,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,29 +19,34 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.hqnguyen.widgetapp.R
 import com.hqnguyen.widgetapp.data.model.WidgetInfo
 import com.hqnguyen.widgetapp.presentation.custom.AppBar
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddWidgetScreen(
@@ -54,8 +61,6 @@ fun AddWidgetScreen(
     val configuration = LocalConfiguration.current
     val pickMedia =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            // Callback is invoked after the user selects a media item or closes the
-            // photo picker.
             if (uri != null) {
                 Log.d("PhotoPicker", "Selected URI: ${uri}")
                 viewModel.handleEvents(WidgetEvent.UpdateBackground(uri))
@@ -63,7 +68,6 @@ fun AddWidgetScreen(
                 Log.e("PhotoPicker", "No media selected")
             }
         }
-    val defaultTextSize: Float = 9F
 
     val screenWidth = configuration.screenWidthDp.dp
 
@@ -97,10 +101,6 @@ fun AddWidgetScreen(
             }
         )
     }) { it ->
-        if (state.isShowLoading) {
-            Loading()
-        }
-
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -147,6 +147,37 @@ fun AddWidgetScreen(
                 }
             )
         }
+
+        if (state.isShowLoading) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent)
+            ) {
+                Loading()
+            }
+        }
+
+        if (state.isSaveComplete) {
+            AlertDialog(
+                containerColor = Color.White, onDismissRequest = { },
+                title = {
+                    Text(text = "Alert")
+                },
+                text = {
+                    Text(text = "Event is saved. You can see this event in Tab Event.")
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            navController?.popBackStack()
+                        }
+                    ) {
+                        Text(text = "OK")
+                    }
+                })
+        }
     }
 
 }
@@ -154,7 +185,10 @@ fun AddWidgetScreen(
 @Composable
 fun Loading() {
     val composition by rememberLottieComposition(LottieCompositionSpec.Asset("loading_lottie.json"))
-    LottieAnimation(composition)
+    LottieAnimation(
+        composition, iterations = LottieConstants.IterateForever,
+        modifier = Modifier.size(60.dp)
+    )
 }
 
 

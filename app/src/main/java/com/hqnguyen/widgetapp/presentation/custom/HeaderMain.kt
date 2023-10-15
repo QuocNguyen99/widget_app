@@ -32,7 +32,7 @@ import com.hqnguyen.widgetapp.presentation.page.history.HistoryScreen
 import com.hqnguyen.widgetapp.presentation.page.home.HomeScreen
 
 @Composable
-fun HeaderMain(onNavigate: (route: String) -> Unit) {
+fun HeaderMain(onNavigate: (route: String) -> Unit = {}) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -42,63 +42,5 @@ fun HeaderMain(onNavigate: (route: String) -> Unit) {
             .padding(horizontal = 16.dp)
     ) {
         Text(text = "Widget App")
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun TabHeader(onNavigate: (route: String) -> Unit) {
-    val tabs = listOf("Home", "Event", "History")
-
-    var tabIndex by remember { mutableIntStateOf(0) }
-    val pagerState = rememberPagerState { tabs.size }
-
-    LaunchedEffect(key1 = tabIndex) {
-        pagerState.animateScrollToPage(tabIndex)
-    }
-
-    LaunchedEffect(key1 = pagerState.currentPage) {
-        tabIndex = pagerState.currentPage
-    }
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-        TabRow(
-            selectedTabIndex = tabIndex,
-            containerColor = Color.White,
-            contentColor = Color(0xFF6ac5fe),
-            divider = { Divider(color = Color.LightGray) },
-            indicator = { tabPositions ->
-                if (tabIndex < tabPositions.size) {
-                    TabRowDefaults.Indicator(
-                        Modifier.tabIndicatorOffset(tabPositions[tabIndex]),
-                        color = Color(0xFF6ac5fe),
-                        height = 2.dp
-                    )
-                }
-            }
-        ) {
-            tabs.forEachIndexed { index, title ->
-                Tab(
-                    text = {
-                        Text(
-                            title,
-                            style = TextStyle(fontWeight = if (tabIndex == index) FontWeight.Bold else FontWeight.Light)
-                        )
-                    },
-                    selected = tabIndex == index,
-                    onClick = { tabIndex = index },
-                )
-            }
-        }
-
-        HorizontalPager(
-            state = pagerState
-        ) {
-            when (it) {
-                0 -> HomeScreen(onNavigate = onNavigate)
-                1 -> EventScreen(onNavigate)
-                2 -> HistoryScreen(onNavigate)
-            }
-        }
     }
 }

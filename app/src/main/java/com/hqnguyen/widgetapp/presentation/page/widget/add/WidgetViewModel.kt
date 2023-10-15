@@ -7,6 +7,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hqnguyen.widgetapp.R
+import com.hqnguyen.widgetapp.data.model.WidgetInfo
 import com.hqnguyen.widgetapp.data.repository.WidgetRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -59,11 +60,11 @@ class WidgetViewModel @Inject constructor(private val widgetRepository: WidgetRe
                 val widgetInfo = widgetRepository.getWidget(id)
                 mutableState.emit(
                     mutableState.value.copy(
-                        title = widgetInfo.title,
-                        textSize = widgetInfo.sizeText,
-                        date = widgetInfo.date,
+                        title = widgetInfo.title ?: "",
+                        textSize = widgetInfo.sizeText ?: 9f,
+                        date = widgetInfo.date ?: System.currentTimeMillis(),
                         textColor = Color.BLACK,
-                        pathImage = if(widgetInfo.imagePath != null) widgetInfo.imagePath!!.toUri() else null
+                        pathImage = if (widgetInfo.imagePath != null) widgetInfo.imagePath!!.toUri() else null
                     )
                 )
             } catch (ex: Exception) {
@@ -121,12 +122,25 @@ class WidgetViewModel @Inject constructor(private val widgetRepository: WidgetRe
     }
 
     private fun saveWidget() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             showLoading(true)
             try {
-//                widgetRepository
-            }catch (ex:Exception){
-
+                widgetRepository.addWidgetInfo(
+                    WidgetInfo(
+                        id = System.currentTimeMillis().toString(),
+                        title = state.value.title,
+                        date = state.value.date,
+                        colorText = state.value.textColor,
+                        sizeText = state.value.textSize,
+                        imagePath = state.value.pathImage.toString(),
+                        fontText = ""
+                    ).toEntity()
+                )
+                showLoading(false)
+            } catch (ex: Exception) {
+                Log.e(TAG, "saveWidget: ${ex.message}")
+            } finally {
+                mutableState.emit(mutableState.value.copy(isShowLoading = true))
             }
         }
     }
