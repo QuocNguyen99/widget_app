@@ -62,7 +62,7 @@ fun AddWidgetScreen(
     val pickMedia =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
-                Log.d("PhotoPicker", "Selected URI: ${uri}")
+                Log.d("PhotoPicker", "Selected URI: $uri")
                 viewModel.handleEvents(WidgetEvent.UpdateBackground(uri))
             } else {
                 Log.e("PhotoPicker", "No media selected")
@@ -82,7 +82,7 @@ fun AddWidgetScreen(
         AppBar(
             currentPage = currentPage ?: "",
             navController = navController,
-            textRightButton = "Save",
+            textRightButton = "Add Widget",
             onRightButtonClick = {
                 viewModel.handleEvents(
                     WidgetEvent.SaveWidget(
