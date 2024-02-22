@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.hqnguyen.widgetapp.R
 import com.hqnguyen.widgetapp.data.model.WidgetInfo
 import com.hqnguyen.widgetapp.data.repository.WidgetRepository
+import com.hqnguyen.widgetapp.widget_glance.LocationInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.log
 
 @HiltViewModel
 class WidgetViewModel @Inject constructor(private val widgetRepository: WidgetRepository) :
@@ -46,6 +46,7 @@ class WidgetViewModel @Inject constructor(private val widgetRepository: WidgetRe
 
     private fun showLoading(isShow: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
+            LocationInfo.serializer()
             mutableState.emit(
                 mutableState.value.copy(
                     isShowLoading = isShow

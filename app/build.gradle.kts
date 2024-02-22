@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
 }
 
 android {
@@ -99,5 +100,6 @@ dependencies {
     kapt(libs.androidx.room.compiler)
 
     implementation(libs.lottie.compose)
+    implementation(libs.kotlinx.serialization.json)
 
 }

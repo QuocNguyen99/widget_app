@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.widget
+package com.hqnguyen.widgetapp.widget_glance
 
 import android.content.Context
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +22,6 @@ import androidx.glance.layout.padding
 import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.Text
-import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 
 private val quotes = listOf(
     "Be yourself; everyone else is already taken. ― Oscar Wilde",

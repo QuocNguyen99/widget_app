@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.widget
+package com.hqnguyen.widgetapp.widget_glance
 
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
