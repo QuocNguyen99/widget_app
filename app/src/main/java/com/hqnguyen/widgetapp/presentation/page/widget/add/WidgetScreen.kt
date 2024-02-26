@@ -1,6 +1,11 @@
 package com.hqnguyen.widgetapp.presentation.page.widget.add
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent
+import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetProviderInfo
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.util.Log
@@ -34,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,6 +51,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hqnguyen.widgetapp.data.model.WidgetInfo
 import com.hqnguyen.widgetapp.presentation.custom.AppBar
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
+import com.hqnguyen.widgetapp.widget_glance.EventWidgetPinnedReceiver
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -71,6 +78,8 @@ fun AddWidgetScreen(
 
     val screenWidth = configuration.screenWidthDp.dp
 
+    val context = LocalContext.current
+
     LaunchedEffect(key1 = true, block = {
         Log.d(TAG, "id: $id")
         if (id != null && id.toLong() != -1L) {
@@ -84,20 +93,23 @@ fun AddWidgetScreen(
             navController = navController,
             textRightButton = "Add Widget",
             onRightButtonClick = {
-                viewModel.handleEvents(
-                    WidgetEvent.SaveWidget(
-                        widgetInfo = WidgetInfo(
-                            id = System.currentTimeMillis().toString(),
-                            title = state.title,
-                            date = state.date,
-                            size = state.sizeCard,
-                            sizeText = state.textSize,
-                            colorText = state.textColor,
-                            imagePath = if (state.pathImage != null) state.pathImage.toString() else null,
-                            defaultImage = state.defaultImage
-                        )
-                    )
-                )
+                val widgetManager = AppWidgetManager.getInstance(context)
+                val widgetProviders = widgetManager.getInstalledProvidersForPackage(context.packageName, null)
+                widgetProviders.first().pin(context)
+//                viewModel.handleEvents(
+//                    WidgetEvent.SaveWidget(
+//                        widgetInfo = WidgetInfo(
+//                            id = System.currentTimeMillis().toString(),
+//                            title = state.title,
+//                            date = state.date,
+//                            size = state.sizeCard,
+//                            sizeText = state.textSize,
+//                            colorText = state.textColor,
+//                            imagePath = if (state.pathImage != null) state.pathImage.toString() else null,
+//                            defaultImage = state.defaultImage
+//                        )
+//                    )
+//                )
             }
         )
     }) { it ->
@@ -191,9 +203,19 @@ fun Loading() {
     )
 }
 
-
 fun openPhotoPicker(pickMedia: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>) {
     pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+}
+
+private fun AppWidgetProviderInfo.pin(context: Context) {
+    val successCallback = PendingIntent.getBroadcast(
+        context,
+        0,
+        Intent(context, EventWidgetPinnedReceiver::class.java),
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    AppWidgetManager.getInstance(context).requestPinAppWidget(provider, null, successCallback)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
