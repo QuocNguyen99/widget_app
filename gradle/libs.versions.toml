@@ -1,49 +1,41 @@
 [versions]
-agp = "8.1.2"
-androidx-material3 = "1.1.2"
-androidx-room-compiler = "2.5.2"
-androidx-room-room-compiler = "2.5.2"
+agp = "8.1.4"
+androidx-material3 = "1.2.0"
 coil-compose = "2.4.0"
-constraintlayout = "2.2.0-alpha13"
 constraintlayout-compose = "1.0.1"
 glance-appwidget = "1.0.0"
 glance-material3 = "1.0.0"
-hilt-android-compiler = "2.44"
-hilt-android = "2.44"
-hilt-navigation-compose = "1.0.0"
-kotlin = "1.8.10"
+hilt-android-compiler = "2.49"
+hilt-android = "2.49"
+hilt-navigation-compose = "1.2.0"
+kotlin = "1.9.22"
 core-ktx = "1.12.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 kotlinx-coroutines-android = "1.7.1"
 kotlinx-serialization-json = "1.6.0"
-lifecycle-runtime-ktx = "2.6.2"
-activity-compose = "1.8.0"
-compose-bom = "2023.10.00"
+lifecycle-runtime-ktx = "2.7.0"
+activity-compose = "1.8.2"
+compose-bom = "2024.02.01"
 lottie-compose = "6.0.1"
-material3 = "1.2.0-alpha09"
 accompanist-systemuicontroller = "0.27.0"
-material = "1.5.1"
-navigation-compose = "2.7.3"
-room-compiler = "2.5.2"
-room-ktx = "2.5.2"
+material = "1.6.2"
+navigation-compose = "2.7.7"
+room-compiler = "2.6.1"
+room-ktx = "2.6.1"
 
 [libraries]
-androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout-compose" }
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance-appwidget" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glance-material3" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-runtime-ktx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-runtime-ktx" }
-androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 androidx-material3-v111 = { module = "androidx.compose.material3:material3", version.ref = "androidx-material3" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-compiler" }
-androidx-room-compiler-v2 = { module = "androidx.room:room-compiler", version.ref = "androidx-room-room-compiler" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-ktx" }
-androidx-room-room-compiler2 = { module = "androidx.room:room-compiler", version.ref = "androidx-room-compiler" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-ktx" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
