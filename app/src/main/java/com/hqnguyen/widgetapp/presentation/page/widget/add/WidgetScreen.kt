@@ -96,20 +96,6 @@ fun AddWidgetScreen(
                 val widgetManager = AppWidgetManager.getInstance(context)
                 val widgetProviders = widgetManager.getInstalledProvidersForPackage(context.packageName, null)
                 widgetProviders.first().pin(context)
-//                viewModel.handleEvents(
-//                    WidgetEvent.SaveWidget(
-//                        widgetInfo = WidgetInfo(
-//                            id = System.currentTimeMillis().toString(),
-//                            title = state.title,
-//                            date = state.date,
-//                            size = state.sizeCard,
-//                            sizeText = state.textSize,
-//                            colorText = state.textColor,
-//                            imagePath = if (state.pathImage != null) state.pathImage.toString() else null,
-//                            defaultImage = state.defaultImage
-//                        )
-//                    )
-//                )
             }
         )
     }) { it ->
@@ -207,6 +193,7 @@ fun openPhotoPicker(pickMedia: ManagedActivityResultLauncher<PickVisualMediaRequ
     pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 private fun AppWidgetProviderInfo.pin(context: Context) {
     val successCallback = PendingIntent.getBroadcast(
         context,

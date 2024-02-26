@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".widget_glance.WidgetReceiver"
+        <receiver android:name=".widget_glance.EventWidgetPinnedReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

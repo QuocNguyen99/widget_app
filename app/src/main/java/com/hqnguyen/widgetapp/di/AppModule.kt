@@ -1,6 +1,5 @@
 package com.hqnguyen.widgetapp.di
 
-import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.hqnguyen.widgetapp.data.dao.WidgetDAO
