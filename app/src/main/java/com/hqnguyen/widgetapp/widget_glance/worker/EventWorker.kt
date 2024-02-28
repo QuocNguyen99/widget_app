@@ -6,6 +6,7 @@ import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.appwidget.updateAll
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
@@ -15,18 +16,20 @@ import com.hqnguyen.widgetapp.data.dao.WidgetDAO
 import com.hqnguyen.widgetapp.widget_glance.EventInfo
 import com.hqnguyen.widgetapp.widget_glance.EventStateDefinition
 import com.hqnguyen.widgetapp.widget_glance.EventWidgetApp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class EventWorker @Inject constructor(
-    private val context: Context,
-    workerParameters: WorkerParameters,
-    private val widgetDAO: WidgetDAO
+@HiltWorker
+class EventWorker @AssistedInject constructor(
+    private var widgetDAO: WidgetDAO,
+    @Assisted private val context: Context,
+    @Assisted workerParameters: WorkerParameters,
 ) : CoroutineWorker(context, workerParameters) {
+
     companion object {
 
         private val uniqueWorkName = EventWorker::class.java.simpleName
@@ -34,14 +37,9 @@ class EventWorker @Inject constructor(
         fun enqueue(context: Context, force: Boolean = false) {
             val manager = WorkManager.getInstance(context)
             val requestBuilder = OneTimeWorkRequestBuilder<EventWorker>()
-                .setInitialDelay(1, TimeUnit.MINUTES)
-            var workPolicy = ExistingWorkPolicy.KEEP
+            val workPolicy = ExistingWorkPolicy.KEEP
 
-            // Replace any enqueued work and expedite the request
-            if (force) {
-                workPolicy = ExistingWorkPolicy.REPLACE
-            }
-
+            Log.d("TAG", "doWork enqueue")
             manager.enqueueUniqueWork(
                 uniqueWorkName,
                 workPolicy,
@@ -55,22 +53,19 @@ class EventWorker @Inject constructor(
     }
 
     override suspend fun doWork(): Result {
-        Log.d("TAG", "doWork Start ")
+        Log.d("TAG", "doWork Entry ")
         val manager = GlanceAppWidgetManager(context)
         val glanceIds = manager.getGlanceIds(EventWidgetApp::class.java)
         return try {
-
             setWidgetState(glanceIds, EventInfo.Loading)
-            CoroutineScope(Dispatchers.IO)
-                .launch {
-                    Log.d("TAG", "doWork Start ")
-
-                    val result = widgetDAO.getAllWidget()
-                    Log.d("TAG", "doWork: $result ")
-                }
-            enqueue(context)
+            Log.d("TAG", "doWork Start ")
+            widgetDAO.getAllWidget().collectLatest {
+                Log.d("TAG", "doWork: $it ")
+                Result.success()
+            }
             Result.success()
         } catch (ex: Exception) {
+            Log.e("TAG", "doWork ex ${ex.message} ")
             Result.failure()
         }
     }

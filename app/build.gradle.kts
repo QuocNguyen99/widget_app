@@ -103,4 +103,9 @@ dependencies {
     implementation(libs.lottie.compose)
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(libs.androidx.hilt.work)
+    kapt (libs.androidx.hilt.compiler)
+
+    implementation(libs.androidx.work.runtime.ktx.v280)
+
 }
