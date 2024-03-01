@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 import com.hqnguyen.widgetapp.data.dao.WidgetDAO
 import com.hqnguyen.widgetapp.data.entity.WidgetEntity
 
-@Database(entities = [WidgetEntity::class], version = 1)
+@Database(entities = [WidgetEntity::class], version = 1, exportSchema = true)
 abstract class WidgetDatabase : RoomDatabase() {
     abstract fun widgetDAO(): WidgetDAO
 

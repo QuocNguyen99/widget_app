@@ -13,15 +13,17 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.hqnguyen.widgetapp.data.dao.WidgetDAO
+import com.hqnguyen.widgetapp.widget_glance.EventData
 import com.hqnguyen.widgetapp.widget_glance.EventInfo
 import com.hqnguyen.widgetapp.widget_glance.EventStateDefinition
 import com.hqnguyen.widgetapp.widget_glance.EventWidgetApp
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltWorker
 class EventWorker @AssistedInject constructor(
@@ -34,7 +36,7 @@ class EventWorker @AssistedInject constructor(
 
         private val uniqueWorkName = EventWorker::class.java.simpleName
 
-        fun enqueue(context: Context, force: Boolean = false) {
+        fun enqueue(context: Context) {
             val manager = WorkManager.getInstance(context)
             val requestBuilder = OneTimeWorkRequestBuilder<EventWorker>()
             val workPolicy = ExistingWorkPolicy.KEEP
@@ -59,9 +61,20 @@ class EventWorker @AssistedInject constructor(
         return try {
             setWidgetState(glanceIds, EventInfo.Loading)
             Log.d("TAG", "doWork Start ")
-            widgetDAO.getAllWidget().collectLatest {
-                Log.d("TAG", "doWork: $it ")
-                Result.success()
+            val data = widgetDAO.getAllWidget().firstOrNull()
+            val lastData = data?.last()
+            Log.d("TAG", "doWork lastData: $lastData ")
+            if (lastData != null) {
+                setWidgetState(
+                    glanceIds,
+                    EventInfo.Available(
+                        eventData = EventData(
+                            lastData.imagePath,
+                            lastData.title,
+                            lastData.title
+                        )
+                    )
+                )
             }
             Result.success()
         } catch (ex: Exception) {

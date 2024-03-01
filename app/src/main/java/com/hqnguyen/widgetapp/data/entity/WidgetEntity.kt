@@ -8,15 +8,26 @@ import com.hqnguyen.widgetapp.data.model.WidgetInfo
 data class WidgetEntity(
     @PrimaryKey
     var id: String = "",
-    var title: String? = "",
-    var size: Int? = null,
-    var date: Long? = null,
-    var colorText: Int? = null,
-    var sizeText: Int? = null,
-    var imagePath: String? = null,
-    var fontText: String? = null,
+    var title: String = "",
+    var size: Int = -1,
+    var date: Long = -1L,
+    var colorText: Int = -1,
+    var sizeText: Int = -1,
+    var imagePath: String = "",
+    var fontText: String = "",
+    var defaultImage: Int = -1
 ) {
     fun toModel(): WidgetInfo {
-        return WidgetInfo(id = id, title = title, size = size, date = date, colorText = colorText, sizeText = sizeText?.toFloat(), imagePath = imagePath, fontText = fontText)
+        return WidgetInfo(
+            id = id,
+            title = title,
+            size = size,
+            date = date,
+            colorText = colorText,
+            sizeText = sizeText.toFloat(),
+            imagePath = imagePath,
+            fontText = fontText,
+            defaultImage = defaultImage
+        )
     }
 }

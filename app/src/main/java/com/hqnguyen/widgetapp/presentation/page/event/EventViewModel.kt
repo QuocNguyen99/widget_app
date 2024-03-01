@@ -32,22 +32,22 @@ class EventViewModel @Inject constructor(private val widgetRepository: WidgetRep
         )
 
 
-    private fun getAllEvents() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                Log.d(TAG, "getAllEvents Entry")
-                widgetRepository.getAllListEvent().map {
-                    Log.d(TAG, "getAllEvents lenth: ${it.size}")
-                    mutableState.value.copy(listEvent = it.map { item -> item.toModel() }.toMutableList())
-                }.stateIn(
-                    scope = viewModelScope,
-                    started = SharingStarted.WhileSubscribed(5000),
-                    initialValue = EventState()
-                ).value
-                Log.d(TAG, "getAllEvents size: ${mutableState.value.listEvent.size}")
-            } catch (ex: Exception) {
-                Log.e(TAG, "getAllEvents: ${ex.message} ")
-            }
-        }
-    }
+//    private fun getAllEvents() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            try {
+//                Log.d(TAG, "getAllEvents Entry")
+//                widgetRepository.getAllListEvent().map {
+//                    Log.d(TAG, "getAllEvents lenth: ${it.size}")
+//                    mutableState.value.copy(listEvent = it.map { item -> item.toModel() }.toMutableList())
+//                }.stateIn(
+//                    scope = viewModelScope,
+//                    started = SharingStarted.WhileSubscribed(5000),
+//                    initialValue = EventState()
+//                ).value
+//                Log.d(TAG, "getAllEvents size: ${mutableState.value.listEvent.size}")
+//            } catch (ex: Exception) {
+//                Log.e(TAG, "getAllEvents: ${ex.message} ")
+//            }
+//        }
+//    }
 }

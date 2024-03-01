@@ -11,7 +11,7 @@ data class WidgetState(
     var title: String = "Who's your birthday?",
     var date: Long = System.currentTimeMillis(),
     var pathImage: Uri? = null,
-    @DrawableRes var defaultImage: Int? = R.mipmap.bg_wedding,
+    @DrawableRes var defaultImage: Int = R.mipmap.bg_wedding,
     var textSize: Float = 9f,
     var sizeCard: Int = 0,
     var textColor: Int = Color.White.toArgb(),

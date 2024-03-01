@@ -39,7 +39,7 @@ class WidgetViewModel @Inject constructor(private val widgetRepository: WidgetRe
             is WidgetEvent.UpdateColorText -> updateTextColor(event.color)
             is WidgetEvent.UpdateDate -> updateDate(event.date)
             is WidgetEvent.UpdateFontSize -> updateFontSize(event.fontSize)
-            is WidgetEvent.SaveWidget -> saveWidget()
+            is WidgetEvent.SaveWidget -> saveWidget(event.cachePatch)
         }
     }
 
@@ -86,7 +86,7 @@ class WidgetViewModel @Inject constructor(private val widgetRepository: WidgetRe
 
     private fun changePhoto(uri: Uri) {
         viewModelScope.launch(Dispatchers.IO) {
-            mutableState.emit(mutableState.value.copy(pathImage = uri, defaultImage = null))
+            mutableState.emit(mutableState.value.copy(pathImage = uri, defaultImage = -1))
         }
     }
 
@@ -120,7 +120,7 @@ class WidgetViewModel @Inject constructor(private val widgetRepository: WidgetRe
         }
     }
 
-    private fun saveWidget() {
+    private fun saveWidget(cachePath: String) {
         viewModelScope.launch(Dispatchers.IO) {
             showLoading(true)
             try {
@@ -131,15 +131,18 @@ class WidgetViewModel @Inject constructor(private val widgetRepository: WidgetRe
                         date = state.value.date,
                         colorText = state.value.textColor,
                         sizeText = state.value.textSize,
-                        imagePath = state.value.pathImage.toString(),
+                        imagePath = cachePath,
                         fontText = ""
                     ).toEntity()
                 )
-                showLoading(false)
+                mutableState.emit(mutableState.value.copy(isSaveComplete = true))
+                Log.d(TAG, "saveWidget success")
             } catch (ex: Exception) {
                 Log.e(TAG, "saveWidget: ${ex.message}")
+                mutableState.emit(mutableState.value.copy(isSaveComplete = false))
             } finally {
-                mutableState.emit(mutableState.value.copy(isShowLoading = true))
+//                mutableState.emit(mutableState.value.copy(isShowLoading = true))
+                showLoading(false)
             }
         }
     }

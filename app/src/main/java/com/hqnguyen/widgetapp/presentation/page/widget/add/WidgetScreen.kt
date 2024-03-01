@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.util.Log
@@ -42,8 +43,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.drawable.toBitmap
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.Coil
+import coil.imageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -52,6 +58,12 @@ import com.hqnguyen.widgetapp.data.model.WidgetInfo
 import com.hqnguyen.widgetapp.presentation.custom.AppBar
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 import com.hqnguyen.widgetapp.widget_glance.EventWidgetPinnedReceiver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -93,9 +105,25 @@ fun AddWidgetScreen(
             navController = navController,
             textRightButton = "Add Widget",
             onRightButtonClick = {
-                val widgetManager = AppWidgetManager.getInstance(context)
-                val widgetProviders = widgetManager.getInstalledProvidersForPackage(context.packageName, null)
-                widgetProviders.first().pin(context)
+                CoroutineScope(Dispatchers.IO).launch {
+                    loadImageAndSaveToCache(context, state.pathImage.toString()) {
+                        viewModel.handleEvents(
+                            WidgetEvent.SaveWidget(
+                                widgetInfo = WidgetInfo(
+                                    id = System.currentTimeMillis().toString(),
+                                    title = state.title,
+                                    date = state.date,
+                                    size = state.sizeCard,
+                                    sizeText = state.textSize,
+                                    colorText = state.textColor,
+                                    imagePath = it,
+                                    defaultImage = state.defaultImage
+                                ),
+                                it
+                            )
+                        )
+                    }
+                }
             }
         )
     }) { it ->
@@ -158,23 +186,10 @@ fun AddWidgetScreen(
         }
 
         if (state.isSaveComplete) {
-            AlertDialog(
-                containerColor = Color.White, onDismissRequest = { },
-                title = {
-                    Text(text = "Alert")
-                },
-                text = {
-                    Text(text = "Event is saved. You can see this event in Tab Event.")
-                },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            navController?.popBackStack()
-                        }
-                    ) {
-                        Text(text = "OK")
-                    }
-                })
+            val widgetManager = AppWidgetManager.getInstance(context)
+            val widgetProviders =
+                widgetManager.getInstalledProvidersForPackage(context.packageName, null)
+            widgetProviders.first().pin(context)
         }
     }
 
@@ -193,6 +208,51 @@ fun openPhotoPicker(pickMedia: ManagedActivityResultLauncher<PickVisualMediaRequ
     pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 }
 
+suspend fun loadImageAndSaveToCache(
+    context: Context,
+    imageUrl: String,
+    onSuccess: (path: String) -> Unit
+) {
+    return withContext(Dispatchers.IO) {
+        try {
+            // Load image using Coil
+            val request = ImageRequest.Builder(context)
+                .data(imageUrl)
+                .build()
+
+            val result = request.context.imageLoader.execute(request)
+            val drawable = (result as SuccessResult).drawable
+
+            // Convert drawable to bitmap
+            val bitmap = drawable.toBitmap()
+
+            // Crop image (you can replace these values with your desired crop dimensions)
+            val croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height)
+
+            // Save cropped image to cache
+            saveToCache(context, croppedBitmap, onSuccess)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+}
+
+private fun saveToCache(context: Context, bitmap: Bitmap, onSuccess: (path: String) -> Unit) {
+    val cacheDir = context.cacheDir
+    val file = File(cacheDir, "cached_image_${System.currentTimeMillis()}.jpg")
+    try {
+        val outputStream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        outputStream.flush()
+        outputStream.close()
+        Log.d("TAG", "saveToCache: ${file.absolutePath}")
+        onSuccess.invoke(file.absolutePath)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+
 @RequiresApi(Build.VERSION_CODES.O)
 private fun AppWidgetProviderInfo.pin(context: Context) {
     val successCallback = PendingIntent.getBroadcast(
@@ -203,6 +263,7 @@ private fun AppWidgetProviderInfo.pin(context: Context) {
     )
 
     AppWidgetManager.getInstance(context).requestPinAppWidget(provider, null, successCallback)
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
