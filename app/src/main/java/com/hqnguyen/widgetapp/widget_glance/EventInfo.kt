@@ -1,5 +1,6 @@
 package com.hqnguyen.widgetapp.widget_glance
 
+import androidx.glance.GlanceId
 import kotlinx.serialization.Serializable
 
 @Serializable

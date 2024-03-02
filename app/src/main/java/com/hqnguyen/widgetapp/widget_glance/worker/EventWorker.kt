@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 @HiltWorker
 class EventWorker @AssistedInject constructor(
@@ -59,20 +60,23 @@ class EventWorker @AssistedInject constructor(
         val manager = GlanceAppWidgetManager(context)
         val glanceIds = manager.getGlanceIds(EventWidgetApp::class.java)
         return try {
-            setWidgetState(glanceIds, EventInfo.Loading)
+            val lastGlanceId = glanceIds.last()
+            setWidgetState(lastGlanceId, EventInfo.Loading)
             Log.d("TAG", "doWork Start ")
+            Log.d("TAG", "doWork glanceIds: $glanceIds ")
             val data = widgetDAO.getAllWidget().firstOrNull()
             val lastData = data?.last()
             Log.d("TAG", "doWork lastData: $lastData ")
+            Log.d("TAG", "doWork lastGlanceId: $lastGlanceId ")
             if (lastData != null) {
                 setWidgetState(
-                    glanceIds,
+                    lastGlanceId,
                     EventInfo.Available(
                         eventData = EventData(
                             lastData.imagePath,
                             lastData.title,
                             lastData.title
-                        )
+                        ),
                     )
                 )
             }
@@ -80,20 +84,20 @@ class EventWorker @AssistedInject constructor(
         } catch (ex: Exception) {
             Log.e("TAG", "doWork ex ${ex.message} ")
             Result.failure()
+        } finally {
+            cancel(context)
         }
     }
 
-    private fun setWidgetState(glanceIds: List<GlanceId>, newState: EventInfo) {
+    private fun setWidgetState(glanceId: GlanceId, newState: EventInfo) {
         MainScope().launch {
-            glanceIds.forEach { glanceId ->
-                updateAppWidgetState(
-                    context = context,
-                    definition = EventStateDefinition,
-                    glanceId = glanceId,
-                    updateState = { newState }
-                )
-            }
-            EventWidgetApp().updateAll(context)
+            updateAppWidgetState(
+                context = context,
+                definition = EventStateDefinition,
+                glanceId = glanceId,
+                updateState = { newState }
+            )
+            EventWidgetApp().update(context, glanceId)
         }
     }
 }

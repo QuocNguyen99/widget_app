@@ -108,4 +108,6 @@ dependencies {
 
     implementation(libs.androidx.work.runtime.ktx.v280)
 
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
 }

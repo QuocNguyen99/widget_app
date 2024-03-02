@@ -1,10 +1,9 @@
 package com.hqnguyen.widgetapp.widget_glance
 
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.util.Log
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.glance.Button
@@ -23,9 +22,13 @@ import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
 import androidx.glance.text.Text
+import com.bumptech.glide.Glide
 import com.hqnguyen.widgetapp.R
-import com.hqnguyen.widgetapp.utils.FilePathUtil
-import java.io.InputStream
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.last
 
 
 class EventWidgetApp : GlanceAppWidget() {
@@ -41,7 +44,6 @@ class EventWidgetApp : GlanceAppWidget() {
     override val sizeMode: SizeMode = SizeMode.Responsive(
         setOf(thinMode, smallMode, mediumMode, largeMode)
     )
-
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
@@ -61,7 +63,7 @@ class EventWidgetApp : GlanceAppWidget() {
 
                     is EventInfo.Available -> {
                         Image(
-                            provider = getImageProvider(context, state.eventData.path),
+                            provider = getImageProvider(context, state.eventData.path).collectAsState(initial = ImageProvider(R.mipmap.bg_study)).value,
                             contentDescription = state.eventData.title
                         )
                     }
@@ -80,23 +82,30 @@ class EventWidgetApp : GlanceAppWidget() {
                 }
             }
         }
-
     }
 
-    private fun getImageProvider(context: Context, path: String): ImageProvider {
-        return try {
+    private fun getImageProvider(context: Context, path: String): Flow<ImageProvider> = flow {
+        try {
             Log.d("TAG", "provideGlance path: $path ")
-            if (path.isEmpty()) {
+            if (path.isEmpty())
                 ImageProvider(R.mipmap.bg_study)
-            } else {
-                val inputStream = context.contentResolver.openInputStream(Uri.parse(path))
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                ImageProvider(bitmap)
+            else {
+                val bitmap = Glide.with(context)
+                    .asBitmap()
+                    .load(path)
+                    .submit()
+                    .get()
+
+                if (bitmap != null)
+                    emit(ImageProvider(bitmap))
+                else
+                    emit(ImageProvider(R.mipmap.bg_study))
             }
         } catch (ex: Exception) {
-            Log.d("TAG", "provideGlance ex: ${ex.message} ")
+            Log.e("TAG", "provideGlance ex: ${ex.message} ")
             ImageProvider(R.mipmap.bg_study)
         }
     }
+        .flowOn(Dispatchers.IO)
 
 }

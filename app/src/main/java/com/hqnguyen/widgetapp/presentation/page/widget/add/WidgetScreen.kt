@@ -44,6 +44,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
+import androidx.glance.GlanceId
+import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.Coil
@@ -54,9 +56,11 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.bumptech.glide.Glide
 import com.hqnguyen.widgetapp.data.model.WidgetInfo
 import com.hqnguyen.widgetapp.presentation.custom.AppBar
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
+import com.hqnguyen.widgetapp.widget_glance.EventWidgetApp
 import com.hqnguyen.widgetapp.widget_glance.EventWidgetPinnedReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -187,9 +191,15 @@ fun AddWidgetScreen(
 
         if (state.isSaveComplete) {
             val widgetManager = AppWidgetManager.getInstance(context)
-            val widgetProviders =
-                widgetManager.getInstalledProvidersForPackage(context.packageName, null)
+            val widgetProviders = widgetManager.getInstalledProvidersForPackage(context.packageName, null)
+
             widgetProviders.first().pin(context)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                val manager = GlanceAppWidgetManager(context)
+                val glanceIds = manager.getGlanceIds(EventWidgetApp::class.java)
+                Log.d(TAG, "AddWidgetScreen: glanceIds: $glanceIds")
+            }
         }
     }
 
@@ -215,22 +225,14 @@ suspend fun loadImageAndSaveToCache(
 ) {
     return withContext(Dispatchers.IO) {
         try {
-            // Load image using Coil
-            val request = ImageRequest.Builder(context)
-                .data(imageUrl)
-                .build()
+            val bitmap = Glide.with(context)
+                .asBitmap()
+                .load(imageUrl)
+                .submit()
+                .get()
 
-            val result = request.context.imageLoader.execute(request)
-            val drawable = (result as SuccessResult).drawable
-
-            // Convert drawable to bitmap
-            val bitmap = drawable.toBitmap()
-
-            // Crop image (you can replace these values with your desired crop dimensions)
-            val croppedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height)
-
-            // Save cropped image to cache
-            saveToCache(context, croppedBitmap, onSuccess)
+            val scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 5, bitmap.height / 5, true)
+            saveToCache(context, scaledBitmap, onSuccess)
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -243,7 +245,7 @@ private fun saveToCache(context: Context, bitmap: Bitmap, onSuccess: (path: Stri
     val file = File(cacheDir, "cached_image_${System.currentTimeMillis()}.jpg")
     try {
         val outputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
         outputStream.flush()
         outputStream.close()
         Log.d("TAG", "saveToCache: ${file.absolutePath}")
@@ -263,7 +265,6 @@ private fun AppWidgetProviderInfo.pin(context: Context) {
     )
 
     AppWidgetManager.getInstance(context).requestPinAppWidget(provider, null, successCallback)
-
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
