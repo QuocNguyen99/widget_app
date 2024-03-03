@@ -194,12 +194,6 @@ fun AddWidgetScreen(
             val widgetProviders = widgetManager.getInstalledProvidersForPackage(context.packageName, null)
 
             widgetProviders.first().pin(context)
-
-            CoroutineScope(Dispatchers.Main).launch {
-                val manager = GlanceAppWidgetManager(context)
-                val glanceIds = manager.getGlanceIds(EventWidgetApp::class.java)
-                Log.d(TAG, "AddWidgetScreen: glanceIds: $glanceIds")
-            }
         }
     }
 

@@ -51,6 +51,7 @@ class EventWorker @AssistedInject constructor(
         }
 
         fun cancel(context: Context) {
+            Log.d("TAG", "doWork cancel")
             WorkManager.getInstance(context).cancelUniqueWork(uniqueWorkName)
         }
     }
