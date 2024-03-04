@@ -10,23 +10,32 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-val listDefaultTemplate = listOf(
-    DefaultTemplate(
-        "Kỷ niệm ngày cưới",
-        "15/08/2022",
-        R.mipmap.bg_birthday,
-        TypeTemplate.BIRTHDAY.ordinal
-    ),
-    DefaultTemplate(
-        "Kỷ niệm ngày cưới",
-        "15/08/2022",
-        R.mipmap.bg_wedding,
-        TypeTemplate.WEDDING_ANNIVERSARY.ordinal
-    ),
-    DefaultTemplate("Kỷ niệm ngày cưới", "15/08/2022",
-        R.mipmap.bg_study,
-        TypeTemplate.STUDY.ordinal),
-)
+val listDefaultTemplate: List<DefaultTemplate>
+    get() = listOf(
+        DefaultTemplate(
+            "Kỷ niệm ngày cưới",
+            "15/08/2022",
+            R.mipmap.bg_birthday,
+            TypeTemplate.BIRTHDAY.ordinal
+        ),
+        DefaultTemplate(
+            "Kỷ niệm ngày cưới",
+            "15/08/2022",
+            R.mipmap.bg_wedding,
+            TypeTemplate.WEDDING_ANNIVERSARY.ordinal
+        ),
+        DefaultTemplate(
+            "Kỷ niệm ngày cưới",
+            "15/08/2022",
+            R.mipmap.bg_study,
+            TypeTemplate.STUDY.ordinal
+        ),
+        DefaultTemplate(
+            "Photo", "",
+            R.mipmap.frame_bg,
+            TypeTemplate.PHOTO.ordinal
+        ),
+    )
 
 @HiltViewModel
 class HomeViewModel @Inject constructor() : ViewModel() {

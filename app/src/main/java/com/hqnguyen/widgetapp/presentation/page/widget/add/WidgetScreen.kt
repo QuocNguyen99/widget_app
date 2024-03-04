@@ -60,6 +60,7 @@ import com.bumptech.glide.Glide
 import com.hqnguyen.widgetapp.data.model.WidgetInfo
 import com.hqnguyen.widgetapp.presentation.custom.AppBar
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
+import com.hqnguyen.widgetapp.utils.openPhotoPicker
 import com.hqnguyen.widgetapp.widget_glance.EventWidgetApp
 import com.hqnguyen.widgetapp.widget_glance.EventWidgetPinnedReceiver
 import kotlinx.coroutines.CoroutineScope
@@ -208,9 +209,6 @@ fun Loading() {
     )
 }
 
-fun openPhotoPicker(pickMedia: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>) {
-    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-}
 
 suspend fun loadImageAndSaveToCache(
     context: Context,

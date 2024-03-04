@@ -45,16 +45,40 @@ import com.hqnguyen.widgetapp.data.model.NavItem
 import com.hqnguyen.widgetapp.presentation.page.event.EventScreen
 import com.hqnguyen.widgetapp.presentation.page.history.HistoryScreen
 import com.hqnguyen.widgetapp.presentation.page.home.HomeScreen
+import com.hqnguyen.widgetapp.presentation.page.photo.EditPhotoScreen
 import com.hqnguyen.widgetapp.presentation.page.widget.add.AddWidgetScreen
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 
-sealed class ScreenBottomBar(val router: String, @StringRes val name: Int, @DrawableRes val resSelectedId: Int, @DrawableRes val resUnselectedId: Int) {
-    object Home : ScreenBottomBar("home", R.string.home_screen, R.drawable.home_selected, R.drawable.home_unselected)
-    object Event : ScreenBottomBar("event", R.string.event_screen, R.drawable.event_selected, R.drawable.event_unselected)
-    object Setting : ScreenBottomBar("setting", R.string.setting_screen, R.drawable.setting_selected, R.drawable.setting_unselected)
+sealed class ScreenBottomBar(
+    val router: String,
+    @StringRes val name: Int,
+    @DrawableRes val resSelectedId: Int,
+    @DrawableRes val resUnselectedId: Int
+) {
+    object Home : ScreenBottomBar(
+        "home",
+        R.string.home_screen,
+        R.drawable.home_selected,
+        R.drawable.home_unselected
+    )
+
+    object Event : ScreenBottomBar(
+        "event",
+        R.string.event_screen,
+        R.drawable.event_selected,
+        R.drawable.event_unselected
+    )
+
+    object Setting : ScreenBottomBar(
+        "setting",
+        R.string.setting_screen,
+        R.drawable.setting_selected,
+        R.drawable.setting_unselected
+    )
 }
 
-val listScreensBottomBar = listOf(ScreenBottomBar.Home, ScreenBottomBar.Event, ScreenBottomBar.Setting)
+val listScreensBottomBar =
+    listOf(ScreenBottomBar.Home, ScreenBottomBar.Event, ScreenBottomBar.Setting)
 
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -76,11 +100,14 @@ fun WidgetApp() {
 @Composable
 fun BottomNavBar(navController: NavController, currentRouter: String?) {
     val isShowBottomBar = listScreensBottomBar.find { currentRouter == it.router } != null
-    AnimatedVisibility(visible = isShowBottomBar, enter = slideInVertically(animationSpec = tween(durationMillis = 1000)) { it } + fadeIn(
-        animationSpec = tween(durationMillis = 200)
-    ), exit = slideOutVertically(animationSpec = tween(durationMillis = 1000)) { it } + fadeOut(
-        animationSpec = tween(durationMillis = 200)
-    )) {
+    AnimatedVisibility(
+        visible = isShowBottomBar,
+        enter = slideInVertically(animationSpec = tween(durationMillis = 1000)) { it } + fadeIn(
+            animationSpec = tween(durationMillis = 200)
+        ),
+        exit = slideOutVertically(animationSpec = tween(durationMillis = 1000)) { it } + fadeOut(
+            animationSpec = tween(durationMillis = 200)
+        )) {
         NavigationBar(
             modifier = Modifier
                 .height(70.dp)
@@ -152,7 +179,17 @@ fun NavigationWidgetApp(
         composable(NavItem.ADD.router) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")?.toLong()
             AddWidgetScreen(
-                id = id, modifier = modifier, currentPage = currentPage?.destination?.route, navController = navController
+                id = id,
+                modifier = modifier,
+                currentPage = currentPage?.destination?.route,
+                navController = navController
+            )
+        }
+
+        composable(NavItem.EDIT_PHOTO.router) {
+            EditPhotoScreen(
+                currentPage = currentPage?.destination?.route,
+                navController = navController
             )
         }
     }
@@ -161,11 +198,14 @@ fun NavigationWidgetApp(
 @Composable
 fun FloatingButton(currentPage: String? = "", navController: NavController) {
     val isShowFAB = listScreensBottomBar.find { currentPage == it.router } != null
-    AnimatedVisibility(visible = isShowFAB, enter = slideInVertically(animationSpec = tween(durationMillis = 1000)) { it } + fadeIn(
-        animationSpec = tween(durationMillis = 1000)
-    ), exit = slideOutVertically(animationSpec = tween(durationMillis = 1000)) { it } + fadeOut(
-        animationSpec = tween(durationMillis = 1000)
-    )) {
+    AnimatedVisibility(
+        visible = isShowFAB,
+        enter = slideInVertically(animationSpec = tween(durationMillis = 1000)) { it } + fadeIn(
+            animationSpec = tween(durationMillis = 1000)
+        ),
+        exit = slideOutVertically(animationSpec = tween(durationMillis = 1000)) { it } + fadeOut(
+            animationSpec = tween(durationMillis = 1000)
+        )) {
         FloatingActionButton(
             containerColor = Color(0xFF6ac5fe),
             contentColor = Color.White,

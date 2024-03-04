@@ -36,12 +36,11 @@ fun SizeEdit(onClickCardSize: (index: Int) -> Unit) {
         horizontalArrangement = Arrangement.Center
     ) {
         ItemEditSize(
-            0,
-            "4x4",
-            listCards[listCards.size - 1].width,
-            listCards[listCards.size - 1].height
+            2,
+            "2x2",
+            listCards[listCards.size - 3].width,
+            listCards[listCards.size - 3].height
         ) { onClickCardSize(it) }
-
         Spacer(modifier = Modifier.width(22.dp))
         ItemEditSize(
             1,
@@ -49,14 +48,12 @@ fun SizeEdit(onClickCardSize: (index: Int) -> Unit) {
             listCards[listCards.size - 2].width,
             listCards[listCards.size - 2].height
         ) { onClickCardSize(it) }
-
         Spacer(modifier = Modifier.width(22.dp))
         ItemEditSize(
-            2,
-            "2x2",
-            listCards[listCards.size - 3].width,
-            listCards[listCards.size - 3].height
+            0,
+            "4x4",
+            listCards[listCards.size - 1].width,
+            listCards[listCards.size - 1].height
         ) { onClickCardSize(it) }
-
     }
 }

@@ -40,6 +40,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hqnguyen.widgetapp.data.model.DefaultTemplate
+import com.hqnguyen.widgetapp.data.model.TypeTemplate
 import com.hqnguyen.widgetapp.presentation.custom.HeaderMain
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 
@@ -55,7 +56,10 @@ fun HomeScreen(
     })
 
     Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).background(Color("#F5F5F5".toColorInt())),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .background(Color("#F5F5F5".toColorInt())),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         HeaderMain()
@@ -74,8 +78,13 @@ fun HomeScreen(
         state.defaultTemplates.forEach { defaultTemplate ->
             CardGuide(
                 defaultTemplate = defaultTemplate,
-                onClick = { onNavigate("add/${defaultTemplate.type}") }
-            )
+                onClick = {
+                    if (defaultTemplate.type == TypeTemplate.PHOTO.ordinal) {
+                        onNavigate("edit_photo")
+                    } else {
+                        onNavigate("add/${defaultTemplate.type}")
+                    }
+                })
         }
     }
 }

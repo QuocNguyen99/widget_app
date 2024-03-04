@@ -7,18 +7,20 @@ data class DefaultTemplate(
     val title: String = "",
     val date: String = "",
     @DrawableRes val backgroundId: Int = R.mipmap.bg_birthday,
-    val type: Int = -1
+    val type: Int = -1,
+    val size: Int = -1
 )
 
-enum class TypeTemplate(type: Int) {
-    GYM(0),
-    STUDY(1),
-    BIRTHDAY(2),
-    WEDDING_ANNIVERSARY(2),
-    TODO(3);
+enum class TypeTemplate {
+    GYM,
+    STUDY,
+    BIRTHDAY,
+    WEDDING_ANNIVERSARY,
+    PHOTO,
+    TODO;
 
     companion object {
         fun from(findValue: String): TypeTemplate =
-            TypeTemplate.values().first { it.name == findValue }
+            entries.first { it.name == findValue }
     }
 }
