@@ -4,7 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -35,6 +36,13 @@ fun AppBar(
     val navItem = NavItem.findEnumByRouter(currentPage)
     Surface(shadowElevation = 9.dp) {
         CenterAlignedTopAppBar(
+            colors = TopAppBarColors(
+                containerColor = Color.White,
+                scrolledContainerColor = Color.White,
+                navigationIconContentColor = Color.Black,
+                titleContentColor = Color.Black,
+                actionIconContentColor = Color.Black
+            ),
             title = {
                 Text(
                     navItem?.title ?: "",
@@ -46,7 +54,7 @@ fun AppBar(
             navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
-                        imageVector = Icons.Outlined.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
                         contentDescription = "Back"
                     )
                 }

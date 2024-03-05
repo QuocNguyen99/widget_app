@@ -44,6 +44,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.toColorInt
 import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -60,6 +61,7 @@ import com.bumptech.glide.Glide
 import com.hqnguyen.widgetapp.data.model.WidgetInfo
 import com.hqnguyen.widgetapp.presentation.custom.AppBar
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
+import com.hqnguyen.widgetapp.utils.loadImageAndSaveToCache
 import com.hqnguyen.widgetapp.utils.openPhotoPicker
 import com.hqnguyen.widgetapp.widget_glance.EventWidgetApp
 import com.hqnguyen.widgetapp.widget_glance.EventWidgetPinnedReceiver
@@ -131,7 +133,8 @@ fun AddWidgetScreen(
                 }
             }
         )
-    }) { it ->
+    }, containerColor = Color("#ebebeb".toColorInt()),
+        contentColor = Color("#ebebeb".toColorInt())) { it ->
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -192,7 +195,8 @@ fun AddWidgetScreen(
 
         if (state.isSaveComplete) {
             val widgetManager = AppWidgetManager.getInstance(context)
-            val widgetProviders = widgetManager.getInstalledProvidersForPackage(context.packageName, null)
+            val widgetProviders =
+                widgetManager.getInstalledProvidersForPackage(context.packageName, null)
 
             widgetProviders.first().pin(context)
         }
@@ -207,44 +211,6 @@ fun Loading() {
         composition, iterations = LottieConstants.IterateForever,
         modifier = Modifier.size(60.dp)
     )
-}
-
-
-suspend fun loadImageAndSaveToCache(
-    context: Context,
-    imageUrl: String,
-    onSuccess: (path: String) -> Unit
-) {
-    return withContext(Dispatchers.IO) {
-        try {
-            val bitmap = Glide.with(context)
-                .asBitmap()
-                .load(imageUrl)
-                .submit()
-                .get()
-
-            val scaledBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 5, bitmap.height / 5, true)
-            saveToCache(context, scaledBitmap, onSuccess)
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-}
-
-private fun saveToCache(context: Context, bitmap: Bitmap, onSuccess: (path: String) -> Unit) {
-    val cacheDir = context.cacheDir
-    val file = File(cacheDir, "cached_image_${System.currentTimeMillis()}.jpg")
-    try {
-        val outputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
-        outputStream.flush()
-        outputStream.close()
-        Log.d("TAG", "saveToCache: ${file.absolutePath}")
-        onSuccess.invoke(file.absolutePath)
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

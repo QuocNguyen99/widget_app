@@ -39,9 +39,7 @@ fun ItemEditSize(
             modifier = Modifier
                 .width(defaultSize * width)
                 .height(defaultSize * height)
-                .clip(
-                    RoundedCornerShape(4.dp)
-                )
+                .clip(RoundedCornerShape(4.dp))
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(bounded = true)

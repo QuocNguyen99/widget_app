@@ -3,12 +3,18 @@ package com.hqnguyen.widgetapp.utils
 
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
+import com.bumptech.glide.Glide
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
 
 object FilePathUtil {
     /**
@@ -21,7 +27,7 @@ object FilePathUtil {
     fun getPath(context: Context, uri: Uri): String? {
 
         //check here to KITKAT or new version
-        val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+        val isKitKat = true
 
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
@@ -135,5 +141,43 @@ object FilePathUtil {
      */
     fun isGooglePhotosUri(uri: Uri): Boolean {
         return "com.google.android.apps.photos.content" == uri.authority
+    }
+}
+
+suspend fun loadImageAndSaveToCache(
+    context: Context,
+    imageUrl: String,
+    onSuccess: (path: String) -> Unit
+) {
+    return withContext(Dispatchers.IO) {
+        try {
+            val bitmap = Glide.with(context)
+                .asBitmap()
+                .load(imageUrl)
+                .submit()
+                .get()
+
+            val scaledBitmap =
+                Bitmap.createScaledBitmap(bitmap, bitmap.width / 5, bitmap.height / 5, true)
+            saveToCache(context, scaledBitmap, onSuccess)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+}
+
+private fun saveToCache(context: Context, bitmap: Bitmap, onSuccess: (path: String) -> Unit) {
+    val cacheDir = context.cacheDir
+    val file = File(cacheDir, "cached_image_${System.currentTimeMillis()}.jpg")
+    try {
+        val outputStream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+        outputStream.flush()
+        outputStream.close()
+        Log.d("TAG", "saveToCache: ${file.absolutePath}")
+        onSuccess.invoke(file.absolutePath)
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 }

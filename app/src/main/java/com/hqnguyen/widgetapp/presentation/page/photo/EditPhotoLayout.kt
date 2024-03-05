@@ -1,5 +1,6 @@
 package com.hqnguyen.widgetapp.presentation.page.photo
 
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -25,7 +27,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
@@ -33,14 +37,18 @@ import androidx.compose.ui.unit.dp
 import com.hqnguyen.widgetapp.R
 import com.hqnguyen.widgetapp.presentation.page.widget.add.item.SizeEdit
 import com.hqnguyen.widgetapp.presentation.page.widget.add.item.listCards
+import es.dmoral.toasty.Toasty
+import okhttp3.internal.wait
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EditPhotoLayout(path: String, screenWidth: Dp, modifier: Modifier = Modifier) {
-
-    val pagerState = rememberPagerState(pageCount = {
-        listCards.size
-    })
+fun EditPhotoLayout(
+    modifier: Modifier = Modifier,
+    path: Uri? = null,
+    screenWidth: Dp,
+    updateSize: (size: Int) -> Unit,
+    updateCropType: (cropType: Int) -> Unit,
+) {
 
     val context = LocalContext.current
 
@@ -53,15 +61,27 @@ fun EditPhotoLayout(path: String, screenWidth: Dp, modifier: Modifier = Modifier
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
         ) {
-            SizeEdit() {
-                if (path.isEmpty()) {
-                    Toast.makeText(context, "Please select a photo", Toast.LENGTH_LONG).show()
+            SizeEdit {
+                if (path == null) {
+                    Toasty.info(context, "Please chose your photo.", Toast.LENGTH_SHORT, true)
+                        .show()
                     return@SizeEdit
                 }
+
+                updateSize(it)
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            CropEdit {
+                if (path == null) {
+                    Toasty.info(context, "Please chose your photo.", Toast.LENGTH_SHORT, true)
+                        .show()
+                    return@CropEdit
+                }
+                updateCropType(it)
             }
             Spacer(modifier = Modifier.height(16.dp))
         }

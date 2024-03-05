@@ -27,14 +27,15 @@ fun CardPhoto(
     screenWidth: Dp,
     indexSizeList: Int = 0,
     path: Uri? = null,
+    cropType: Int = 0,
     openMedia: () -> Unit
 ) {
     Card(
         elevation = CardDefaults.cardElevation(8.dp),
         modifier = Modifier
-            .width(screenWidth / listCards[indexSizeList].height)
-            .height(screenWidth / listCards[indexSizeList].height)
             .padding(0.dp, vertical = 16.dp)
+            .width(screenWidth / listCards[indexSizeList].height)
+            .height(screenWidth / listCards[indexSizeList].width)
             .clickable {
                 if (path == null) {
                     openMedia()
@@ -60,12 +61,19 @@ fun CardPhoto(
                 AsyncImage(
                     model = path,
                     contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .width(screenWidth / listCards[indexSizeList].height)
-                        .height(screenWidth / listCards[indexSizeList].width)
+                    contentScale = checkCropType(cropType),
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
+    }
+}
+
+fun checkCropType(cropType: Int): ContentScale {
+    return when (cropType) {
+        0 -> ContentScale.Crop
+        1 -> ContentScale.FillBounds
+        2 -> ContentScale.None
+        else -> ContentScale.Crop
     }
 }
