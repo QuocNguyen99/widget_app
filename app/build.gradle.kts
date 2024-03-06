@@ -110,5 +110,5 @@ dependencies {
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.github.GrenderG:Toasty:1.5.2")
-    implementation("com.github.SmartToolFactory:Compose-Cropper:0.4.0")
+    implementation("com.vanniktech:android-image-cropper:4.5.0")
 }

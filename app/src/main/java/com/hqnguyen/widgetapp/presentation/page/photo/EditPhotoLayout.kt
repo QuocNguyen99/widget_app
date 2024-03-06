@@ -70,18 +70,18 @@ fun EditPhotoLayout(
                         .show()
                     return@SizeEdit
                 }
-
                 updateSize(it)
             }
             Spacer(modifier = Modifier.height(16.dp))
 
             CropEdit {
                 if (path == null) {
-                    Toasty.info(context, "Please chose your photo.", Toast.LENGTH_SHORT, true)
+                    Toasty.info(context, "Please choose your photo.", Toast.LENGTH_SHORT, true)
                         .show()
                     return@CropEdit
                 }
                 updateCropType(it)
+                Log.d("CropEdit", "CropEdit ")
             }
             Spacer(modifier = Modifier.height(16.dp))
         }
