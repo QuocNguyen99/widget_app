@@ -2,6 +2,7 @@ package com.hqnguyen.widgetapp.presentation.page.photo
 
 import android.net.Uri
 import android.util.Log
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hqnguyen.widgetapp.presentation.page.widget.add.WidgetViewModel
@@ -27,6 +28,18 @@ class EditPhotoViewModel @Inject constructor() : ViewModel() {
             is EditPhotoEvent.UpdatePhoto -> updatePhoto(event.path)
             is EditPhotoEvent.UpdateSize -> updateSize(event.size)
             is EditPhotoEvent.UpdateCropType -> updateCropType(event.type)
+            is EditPhotoEvent.UpdateBorderColor -> updateBorderColor(event.color)
+        }
+    }
+
+    private fun updateBorderColor(color: Color) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "updateBorderColor color $color")
+            mutableState.emit(
+                mutableState.value.copy(
+                    borderColor = color
+                )
+            )
         }
     }
 

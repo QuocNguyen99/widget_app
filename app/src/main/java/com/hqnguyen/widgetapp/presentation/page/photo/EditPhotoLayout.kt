@@ -1,5 +1,6 @@
 package com.hqnguyen.widgetapp.presentation.page.photo
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -57,7 +58,6 @@ fun EditPhotoLayout(
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         colors = CardDefaults.cardColors(Color.White)
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -65,25 +65,35 @@ fun EditPhotoLayout(
                 .verticalScroll(rememberScrollState())
         ) {
             SizeEdit {
-                if (path == null) {
-                    Toasty.info(context, "Please chose your photo.", Toast.LENGTH_SHORT, true)
-                        .show()
-                    return@SizeEdit
-                }
+                checkPathIsExit(context, path)
                 updateSize(it)
             }
             Spacer(modifier = Modifier.height(16.dp))
 
             CropEdit {
-                if (path == null) {
-                    Toasty.info(context, "Please choose your photo.", Toast.LENGTH_SHORT, true)
-                        .show()
-                    return@CropEdit
-                }
+                checkPathIsExit(context, path)
                 updateCropType(it)
                 Log.d("CropEdit", "CropEdit ")
             }
             Spacer(modifier = Modifier.height(16.dp))
+
+            FrameEdit {
+                checkPathIsExit(context, path)
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            CornerEdit {
+                checkPathIsExit(context, path)
+            }
+            Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+}
+
+fun checkPathIsExit(context: Context, path: Uri?) {
+    if (path == null) {
+        Toasty.info(context, "Please choose your photo.", Toast.LENGTH_SHORT, true)
+            .show()
+        return
     }
 }

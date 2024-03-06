@@ -1,21 +1,28 @@
 package com.hqnguyen.widgetapp.presentation.page.photo
 
 import android.net.Uri
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -32,9 +39,16 @@ fun CardPhoto(
     indexSizeList: Int = 0,
     path: Uri? = null,
     cropType: Int = 0,
-    openMedia: () -> Unit
+    openMedia: () -> Unit,
+    borderColor: Color? = Color.White
 ) {
+    val colorStops = arrayOf(
+        0.0f to Color.Yellow,
+        0.2f to Color.Red,
+        1f to Color.Blue
+    )
     Card(
+        border = if (borderColor == null) null else BorderStroke(4.dp, Brush.horizontalGradient(colorStops = colorStops)),
         elevation = CardDefaults.cardElevation(8.dp),
         modifier = Modifier
             .padding(0.dp, vertical = 16.dp)
@@ -56,10 +70,10 @@ fun CardPhoto(
                     painter = painterResource(id = R.drawable.default_img),
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
-                    alpha = 0.7f,
+                    alpha = 0.4f,
                     modifier = Modifier
-                        .width(screenWidth / 6)
-                        .height(screenWidth / 6)
+                        .width(screenWidth / 12)
+                        .height(screenWidth / 12)
                 )
             } else {
                 SubcomposeAsyncImage(
@@ -68,7 +82,10 @@ fun CardPhoto(
                     contentScale = checkCropType(cropType),
                     loading = {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(4.dp),
+                            modifier = Modifier
+                                .width(4.dp)
+                                .height(4.dp)
+                                .padding(32.dp),
                             color = Color.Blue,
                             trackColor = Color.Gray,
                         )
@@ -76,6 +93,7 @@ fun CardPhoto(
                     modifier = Modifier
                         .fillMaxSize()
                         .clickable { openMedia() }
+                        .clip(RoundedCornerShape(12.dp))
                 )
             }
         }
