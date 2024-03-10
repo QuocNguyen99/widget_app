@@ -7,6 +7,7 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,7 @@ import com.canhub.cropper.CropImageOptions
 import com.hqnguyen.widgetapp.presentation.custom.AppBar
 import com.hqnguyen.widgetapp.utils.openPhotoPicker
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EditPhotoScreen(
     currentPage: String? = "",
@@ -76,12 +78,7 @@ fun EditPhotoScreen(
     val screenWidth = configuration.screenWidthDp.dp
 
     if (state.cropType == 2) {
-        Log.d(
-            "EditPhotoScreen",
-            "CropPhotoScreen render ${"crop_photo${Uri.encode(state.path.toString())}"}"
-        )
-        val cropOptions =
-            CropImageContractOptions(state.path, CropImageOptions(imageSourceIncludeCamera = false))
+        val cropOptions = CropImageContractOptions(state.path, CropImageOptions(imageSourceIncludeCamera = false))
         imageCropLauncher.launch(cropOptions)
     } else
         Scaffold(

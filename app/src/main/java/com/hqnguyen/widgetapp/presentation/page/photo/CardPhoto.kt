@@ -42,13 +42,8 @@ fun CardPhoto(
     openMedia: () -> Unit,
     borderColor: Color? = Color.White
 ) {
-    val colorStops = arrayOf(
-        0.0f to Color.Yellow,
-        0.2f to Color.Red,
-        1f to Color.Blue
-    )
+
     Card(
-        border = if (borderColor == null) null else BorderStroke(4.dp, Brush.horizontalGradient(colorStops = colorStops)),
         elevation = CardDefaults.cardElevation(8.dp),
         modifier = Modifier
             .padding(0.dp, vertical = 16.dp)
