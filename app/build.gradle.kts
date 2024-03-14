@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.hqnguyen.widgetapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.graphics.shapes.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -108,7 +109,8 @@ dependencies {
 
     implementation(libs.androidx.work.runtime.ktx.v280)
 
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.glide)
     implementation ("com.github.GrenderG:Toasty:1.5.2")
-    implementation("com.vanniktech:android-image-cropper:4.5.0")
+    implementation(libs.android.image.cropper)
+    implementation(libs.androidx.graphics.shapes)
 }

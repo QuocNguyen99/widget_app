@@ -55,21 +55,21 @@ sealed class ScreenBottomBar(
     @DrawableRes val resSelectedId: Int,
     @DrawableRes val resUnselectedId: Int
 ) {
-    object Home : ScreenBottomBar(
+    data object Home : ScreenBottomBar(
         "home",
         R.string.home_screen,
         R.drawable.home_selected,
         R.drawable.home_unselected
     )
 
-    object Event : ScreenBottomBar(
+    data object Event : ScreenBottomBar(
         "event",
         R.string.event_screen,
         R.drawable.event_selected,
         R.drawable.event_unselected
     )
 
-    object Setting : ScreenBottomBar(
+    data object Setting : ScreenBottomBar(
         "setting",
         R.string.setting_screen,
         R.drawable.setting_selected,
@@ -80,7 +80,6 @@ sealed class ScreenBottomBar(
 val listScreensBottomBar =
     listOf(ScreenBottomBar.Home, ScreenBottomBar.Event, ScreenBottomBar.Setting)
 
-@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun WidgetApp() {
@@ -122,8 +121,6 @@ fun BottomNavBar(navController: NavController, currentRouter: String?) {
                 NavigationBarItem(
                     selected = currentRouter == screen.router,
                     onClick = { navController.navigate(screen.router) },
-//                label = { Text(text = stringResource(id = screen.name), style = TextStyle(fontSize = 11.sp)) },
-//                alwaysShowLabel = isSelected,
                     icon = {
                         Crossfade(
                             targetState = isSelected, label = "", animationSpec = tween(200)
@@ -150,7 +147,6 @@ fun BottomNavBar(navController: NavController, currentRouter: String?) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavigationWidgetApp(
     navController: NavHostController,

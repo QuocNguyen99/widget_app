@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ItemEditSize(
+    indexSize: Int,
     index: Int = 0,
     title: String,
     width: Int,
@@ -34,7 +35,7 @@ fun ItemEditSize(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Surface(
-            color = Color.LightGray,
+            color = if (indexSize == index) Color(0xFF6ac5fe) else Color.LightGray,
             shape = RoundedCornerShape(4.dp),
             modifier = Modifier
                 .width(defaultSize * width)

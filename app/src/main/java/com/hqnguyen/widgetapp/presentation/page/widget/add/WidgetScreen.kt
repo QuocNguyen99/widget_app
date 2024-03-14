@@ -106,35 +106,37 @@ fun AddWidgetScreen(
         }
     })
 
-    Scaffold(topBar = {
-        AppBar(
-            currentPage = currentPage ?: "",
-            navController = navController,
-            textRightButton = "Add Widget",
-            onRightButtonClick = {
-                CoroutineScope(Dispatchers.IO).launch {
-                    loadImageAndSaveToCache(context, state.pathImage.toString()) {
-                        viewModel.handleEvents(
-                            WidgetEvent.SaveWidget(
-                                widgetInfo = WidgetInfo(
-                                    id = System.currentTimeMillis().toString(),
-                                    title = state.title,
-                                    date = state.date,
-                                    size = state.sizeCard,
-                                    sizeText = state.textSize,
-                                    colorText = state.textColor,
-                                    imagePath = it,
-                                    defaultImage = state.defaultImage
-                                ),
-                                it
+    Scaffold(
+        topBar = {
+            AppBar(
+                currentPage = currentPage ?: "",
+                navController = navController,
+                textRightButton = "Add Widget",
+                onRightButtonClick = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        loadImageAndSaveToCache(context, state.pathImage.toString()) {
+                            viewModel.handleEvents(
+                                WidgetEvent.SaveWidget(
+                                    widgetInfo = WidgetInfo(
+                                        id = System.currentTimeMillis().toString(),
+                                        title = state.title,
+                                        date = state.date,
+                                        size = state.sizeCard,
+                                        sizeText = state.textSize,
+                                        colorText = state.textColor,
+                                        imagePath = it,
+                                        defaultImage = state.defaultImage
+                                    ),
+                                    it
+                                )
                             )
-                        )
+                        }
                     }
                 }
-            }
-        )
-    }, containerColor = Color("#ebebeb".toColorInt()),
-        contentColor = Color("#ebebeb".toColorInt())) { it ->
+            )
+        }, containerColor = Color("#ebebeb".toColorInt()),
+        contentColor = Color("#ebebeb".toColorInt())
+    ) { it ->
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -167,6 +169,7 @@ fun AddWidgetScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
+                currentIndexSize = state.sizeCard,
                 currentTextSize = state.textSize,
                 currentTextColor = state.textColor,
                 updateCurrentTitle = { viewModel.handleEvents(WidgetEvent.UpdateTitle(it)) },
@@ -213,7 +216,6 @@ fun Loading() {
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 private fun AppWidgetProviderInfo.pin(context: Context) {
     val successCallback = PendingIntent.getBroadcast(
         context,
@@ -225,7 +227,6 @@ private fun AppWidgetProviderInfo.pin(context: Context) {
     AppWidgetManager.getInstance(context).requestPinAppWidget(provider, null, successCallback)
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun AddWidgetScreenReview() {

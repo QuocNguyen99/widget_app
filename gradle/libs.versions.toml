@@ -1,10 +1,13 @@
 [versions]
 agp = "8.1.4"
-androidx-material3 = "1.2.0"
+android-image-cropper = "4.5.0"
+androidx-material3 = "1.2.1"
 coil-compose = "2.4.0"
 constraintlayout-compose = "1.0.1"
 glance-appwidget = "1.0.0"
 glance-material3 = "1.0.0"
+glide = "4.16.0"
+graphics-shapes = "1.0.0-alpha05"
 hilt-android-compiler = "2.49"
 hilt-android = "2.49"
 hilt-compiler = "1.2.0"
@@ -15,24 +18,27 @@ core-ktx = "1.12.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
-kotlinx-coroutines-android = "1.7.1"
+kotlinx-coroutines-android = "1.7.3"
 kotlinx-serialization-json = "1.6.0"
 lifecycle-runtime-ktx = "2.7.0"
 activity-compose = "1.8.2"
-compose-bom = "2024.02.01"
+compose-bom = "2024.02.02"
 lottie-compose = "6.0.1"
 accompanist-systemuicontroller = "0.27.0"
-material = "1.6.2"
+material = "1.6.3"
 navigation-compose = "2.7.7"
 room-compiler = "2.6.1"
 room-ktx = "2.6.1"
 work-runtime-ktx = "2.9.0"
 work-runtime-ktx-version = "2.9.0"
+graphics-shapes-android = "1.0.0-alpha05"
 
 [libraries]
+android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "android-image-cropper" }
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout-compose" }
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance-appwidget" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glance-material3" }
+androidx-graphics-shapes = { module = "androidx.graphics:graphics-shapes", version.ref = "graphics-shapes" }
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt-compiler" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hilt-work" }
@@ -46,6 +52,7 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-work-runtime-ktx-v280 = { module = "androidx.work:work-runtime-ktx", version.ref = "work-runtime-ktx-version" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android-compiler" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -67,6 +74,7 @@ material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "material" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist-systemuicontroller" }
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime-ktx" }
+androidx-graphics-shapes-android = { group = "androidx.graphics", name = "graphics-shapes-android", version.ref = "graphics-shapes-android" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.presentation.page.photo
+package com.hqnguyen.widgetapp.presentation.page.photo.edit
 
 import android.os.Build
 import android.util.Log

@@ -1,4 +1,4 @@
-package com.hqnguyen.widgetapp.presentation.page.photo
+package com.hqnguyen.widgetapp.presentation.page.photo.edit
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

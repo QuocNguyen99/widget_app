@@ -26,10 +26,10 @@ import com.hqnguyen.widgetapp.presentation.page.widget.add.item.TextColorEdit
 import com.hqnguyen.widgetapp.presentation.page.widget.add.item.TextSizeEdit
 import com.hqnguyen.widgetapp.presentation.page.widget.add.item.TitleEdit
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CardEdit(
     modifier: Modifier = Modifier,
+    currentIndexSize:Int = 0,
     currentTextSize: Float = 9F,
     currentTextColor: Int = Color.White.toArgb(),
     updateCurrentTitle: (title: String) -> Unit,
@@ -58,7 +58,7 @@ fun CardEdit(
             DateEdit(updateCurrentDate)
             Spacer(modifier = Modifier.height(16.dp))
 
-            SizeEdit(onClickCardSize)
+            SizeEdit(indexSize = currentIndexSize,onClickCardSize)
             Spacer(modifier = Modifier.height(16.dp))
 
             BackgroundEdit(openPhotoPicker, onClickDefaultPhoto)

@@ -3,6 +3,7 @@ package com.hqnguyen.widgetapp.presentation.page.photo
 import android.net.Uri
 import android.util.Log
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hqnguyen.widgetapp.presentation.page.widget.add.WidgetViewModel
@@ -28,16 +29,40 @@ class EditPhotoViewModel @Inject constructor() : ViewModel() {
             is EditPhotoEvent.UpdatePhoto -> updatePhoto(event.path)
             is EditPhotoEvent.UpdateSize -> updateSize(event.size)
             is EditPhotoEvent.UpdateCropType -> updateCropType(event.type)
-            is EditPhotoEvent.UpdateBorderColor -> updateBorderColor(event.color)
+            is EditPhotoEvent.UpdateBorderColor -> updateBorderColor(event.borderPosition)
+            is EditPhotoEvent.UpdateCorner -> updateCorner(event.cornerSize)
+            is EditPhotoEvent.UpdateShape -> updateShape(event.index)
         }
     }
 
-    private fun updateBorderColor(color: Color) {
+    private fun updateShape(index: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d(TAG, "updateBorderColor color $color")
+            Log.d(TAG, "updateShape index $index")
             mutableState.emit(
                 mutableState.value.copy(
-                    borderColor = color
+                    shapeIndex = index
+                )
+            )
+        }
+    }
+
+    private fun updateCorner(cornerSize: Dp) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "updateCorner cornerSize $cornerSize")
+            mutableState.emit(
+                mutableState.value.copy(
+                    cornerSize = cornerSize
+                )
+            )
+        }
+    }
+
+    private fun updateBorderColor(borderPosition: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "updateBorderColor borderPosition $borderPosition")
+            mutableState.emit(
+                mutableState.value.copy(
+                    borderColor = borderPosition
                 )
             )
         }

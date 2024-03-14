@@ -2,6 +2,8 @@ package com.hqnguyen.widgetapp.presentation.page.photo
 
 import android.net.Uri
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 data class EditPhotoState(
     val path: Uri? = null,
@@ -10,6 +12,8 @@ data class EditPhotoState(
     val positionY: Int = -1,
     val width: Int = 0,
     val height: Int = 0,
-    val borderColor: Color? = null,
-    val cropType: Int = 0
+    val borderColor: Int = -1,
+    val cropType: Int = 0,
+    val cornerSize: Dp = 16.dp,
+    val shapeIndex:Int = 0
 )

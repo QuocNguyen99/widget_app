@@ -27,7 +27,7 @@ val listCards = listOf(
 )
 
 @Composable
-fun SizeEdit(onClickCardSize: (index: Int) -> Unit) {
+fun SizeEdit(indexSize: Int, onClickCardSize: (index: Int) -> Unit) {
     Text(
         text = "Size",
         style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp),
@@ -40,11 +40,14 @@ fun SizeEdit(onClickCardSize: (index: Int) -> Unit) {
             .padding(vertical = 0.dp, horizontal = 16.dp)
     )
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 0.dp, horizontal = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 0.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         ItemEditSize(
+            indexSize,
             2,
             "2x2",
             listCards[listCards.size - 3].width,
@@ -52,6 +55,7 @@ fun SizeEdit(onClickCardSize: (index: Int) -> Unit) {
         ) { onClickCardSize(it) }
         Spacer(modifier = Modifier.width(22.dp))
         ItemEditSize(
+            indexSize,
             1,
             "2x4",
             listCards[listCards.size - 2].width,
@@ -59,6 +63,7 @@ fun SizeEdit(onClickCardSize: (index: Int) -> Unit) {
         ) { onClickCardSize(it) }
         Spacer(modifier = Modifier.width(22.dp))
         ItemEditSize(
+            indexSize,
             0,
             "4x4",
             listCards[listCards.size - 1].width,
