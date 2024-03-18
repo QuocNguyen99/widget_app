@@ -34,7 +34,7 @@ import es.dmoral.toasty.Toasty
 @Composable
 fun EditPhotoLayout(
     modifier: Modifier = Modifier,
-    path: Uri? = null,
+    listPath: List<Uri>? = null,
     indexSize: Int = 0,
     indexShape: Int = 0,
     screenWidth: Dp,
@@ -65,20 +65,18 @@ fun EditPhotoLayout(
                 .verticalScroll(rememberScrollState())
         ) {
             SizeEdit(indexSize = indexSize) {
-                if (path == null) {
+                if (listPath == null) {
                     Toasty.info(context, messageChoose, Toast.LENGTH_SHORT, true)
                         .show()
                     return@SizeEdit
                 }
                 updateSize(it)
-                if (it == 1) {
-                    updateShape(0)
-                }
+//                updateShape(0)
             }
             Spacer(modifier = Modifier.height(16.dp))
 
             CropEdit {
-                if (path == null) {
+                if (listPath == null) {
                     Toasty.info(context, messageChoose, Toast.LENGTH_SHORT, true)
                         .show()
                     return@CropEdit
@@ -89,7 +87,7 @@ fun EditPhotoLayout(
             Spacer(modifier = Modifier.height(16.dp))
 
             FrameEdit(colorList = colorList, isPositionSelected = isPositionFrameSelected) {
-                if (path == null) {
+                if (listPath == null) {
                     Toasty.info(context, messageChoose, Toast.LENGTH_SHORT, true)
                         .show()
                     return@FrameEdit
@@ -99,31 +97,28 @@ fun EditPhotoLayout(
             }
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (indexSize == 1) {
-                CornerEdit {
-                    if (path == null) {
-                        Toasty.info(context, messageChoose, Toast.LENGTH_SHORT, true)
-                            .show()
-                        return@CornerEdit
-                    }
-
-                    updateCorner(it)
+            CornerEdit {
+                if (listPath == null) {
+                    Toasty.info(context, messageChoose, Toast.LENGTH_SHORT, true)
+                        .show()
+                    return@CornerEdit
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-            }
 
-            if (indexSize != 1) {
-                ShapeEdit(indexShape = indexShape) {
-                    if (path == null) {
-                        Toasty.info(context, messageChoose, Toast.LENGTH_SHORT, true)
-                            .show()
-                        return@ShapeEdit
-                    }
-
-                    updateShape(it)
-                }
-                Spacer(modifier = Modifier.height(16.dp))
+                updateCorner(it)
             }
+            Spacer(modifier = Modifier.height(16.dp))
+
+
+//                ShapeEdit(indexShape = indexShape) {
+//                    if (listPath == null) {
+//                        Toasty.info(context, messageChoose, Toast.LENGTH_SHORT, true)
+//                            .show()
+//                        return@ShapeEdit
+//                    }
+//
+//                    updateShape(it)
+//                }
+//                Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }

@@ -3,20 +3,32 @@ package com.hqnguyen.widgetapp.presentation.page.photo
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,7 +41,6 @@ import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asComposePath
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Density
@@ -46,69 +57,76 @@ import com.hqnguyen.widgetapp.R
 import com.hqnguyen.widgetapp.presentation.page.widget.add.item.listCards
 import kotlin.math.max
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CardPhoto(
     screenWidth: Dp,
     indexSizeList: Int = 0,
     indexShape: Int = 0,
-    path: Uri? = null,
+    listPath: List<Uri>? = null,
     cropType: Int = 0,
     cornerSize: Dp = 16.dp,
     openMedia: () -> Unit,
-    borderColor: List<Color> = listOf(Color.White)
+    borderColor: List<Color> = listOf(Color.White),
+    updateCurrentImageDisplay: (page: Int) -> Unit = {}
 ) {
 
-    Card(
-        shape = if (indexSizeList == 1) RoundedCornerShape(16.dp) else CardDefaults.shape,
-        elevation = CardDefaults.cardElevation(8.dp),
-        modifier = Modifier
-            .padding(0.dp, vertical = 16.dp)
-            .width(screenWidth / listCards[indexSizeList].height)
-            .height(screenWidth / listCards[indexSizeList].width)
-            .clickable {
-                if (path == null) {
+    val pagerState = rememberPagerState(pageCount = {
+        listPath?.size ?: 0
+    })
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            Log.d("CardPhoto", "Page changed to $page")
+            updateCurrentImageDisplay(page)
+        }
+    }
+
+    if (listPath.isNullOrEmpty()) {
+        Card(
+            shape = RoundedCornerShape(cornerSize),
+            elevation = CardDefaults.cardElevation(8.dp),
+            modifier = Modifier
+                .padding(16.dp)
+                .width(screenWidth / listCards[indexSizeList].height + 16.dp)
+                .height(screenWidth / listCards[indexSizeList].width + 16.dp)
+                .clickable {
                     openMedia()
-                }
-            }
-            .graphicsLayer {
-                if (indexSizeList != 1) {
-                    this.shape = RoundedPolygonShape(
-                        polygon = shapeType(indexShape, size)
-                    )
-                    this.clip = true
-                    if (indexShape == 1) {
-                        this.rotationZ = 90f
-                    }
-                    if (indexShape == 2) {
-                        this.rotationZ = -18f
-                    }
-                }
-            },
-        border = if (borderColor.isEmpty()) null else {
-            if (borderColor.size == 1) BorderStroke(
-                2.dp,
-                borderColor.first()
-            ) else BorderStroke(2.dp, Brush.linearGradient(colors = borderColor))
-        },
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
+                },
         ) {
-            if (path == null) {
-                Image(
-                    painter = painterResource(id = R.drawable.default_img),
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop,
-                    alpha = 0.4f,
-                    modifier = Modifier
-                        .width(screenWidth / 12)
-                        .height(screenWidth / 12)
-                )
-            } else {
+            Image(
+                painter = painterResource(id = R.drawable.default_img),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                alpha = 0.4f,
+                alignment = Alignment.Center,
+                modifier = Modifier
+                    .width(screenWidth / 12)
+                    .height(screenWidth / 12)
+            )
+        }
+    } else {
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier
+                .padding(0.dp, vertical = 16.dp)
+                .width(screenWidth / listCards[indexSizeList].height + 16.dp)
+                .height(screenWidth / listCards[indexSizeList].width + 16.dp)
+        ) { page ->
+            Card(
+                shape = RoundedCornerShape(cornerSize),
+                elevation = CardDefaults.cardElevation(8.dp),
+                modifier = Modifier
+                    .padding(16.dp),
+                border = if (borderColor.isEmpty()) null else {
+                    if (borderColor.size == 1) BorderStroke(
+                        2.dp,
+                        borderColor.first()
+                    ) else BorderStroke(2.dp, Brush.linearGradient(colors = borderColor))
+                },
+            ) {
                 SubcomposeAsyncImage(
-                    model = path,
+                    model = listPath[page],
                     contentDescription = null,
                     contentScale = checkCropType(cropType),
                     loading = {
@@ -124,18 +142,59 @@ fun CardPhoto(
                     modifier = Modifier
                         .fillMaxSize()
                         .clickable { openMedia() }
-                        .graphicsLayer {
-                            if (indexSizeList != 1) {
-                                this.shape = RoundedPolygonShape(
-                                    polygon = shapeType(indexShape, size)
-                                )
-                                this.clip = true
-                            }
-                        }
+                        .clip(RoundedCornerShape(cornerSize))
                 )
             }
         }
+
+        DotsIndicator(
+            totalDots = listPath.size,
+            selectedIndex = pagerState.currentPage,
+            selectedColor = Color.Blue,
+            unSelectedColor = Color.Red
+        )
+
+        Spacer(modifier = Modifier.padding(8.dp))
     }
+}
+
+@Composable
+fun DotsIndicator(
+    totalDots: Int,
+    selectedIndex: Int,
+    selectedColor: Color,
+    unSelectedColor: Color,
+) {
+    if (totalDots != 0)
+        LazyRow(
+            modifier = Modifier
+                .wrapContentWidth()
+                .wrapContentHeight()
+
+        ) {
+
+            items(totalDots) { index ->
+                if (index == selectedIndex) {
+                    Box(
+                        modifier = Modifier
+                            .size(5.dp)
+                            .clip(CircleShape)
+                            .background(selectedColor)
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .size(5.dp)
+                            .clip(CircleShape)
+                            .background(unSelectedColor)
+                    )
+                }
+
+                if (index != totalDots - 1) {
+                    Spacer(modifier = Modifier.padding(horizontal = 2.dp))
+                }
+            }
+        }
 }
 
 fun checkCropType(cropType: Int): ContentScale {

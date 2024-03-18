@@ -2,7 +2,6 @@ package com.hqnguyen.widgetapp.presentation.page.photo
 
 import android.net.Uri
 import android.util.Log
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,7 +25,12 @@ class EditPhotoViewModel @Inject constructor() : ViewModel() {
 
     fun handleEvents(event: EditPhotoEvent) {
         when (event) {
-            is EditPhotoEvent.UpdatePhoto -> updatePhoto(event.path)
+            is EditPhotoEvent.UpdatePhoto -> updatePhoto(
+                event.listPath,
+                event.isCrop,
+                event.position
+            )
+
             is EditPhotoEvent.UpdateSize -> updateSize(event.size)
             is EditPhotoEvent.UpdateCropType -> updateCropType(event.type)
             is EditPhotoEvent.UpdateBorderColor -> updateBorderColor(event.borderPosition)
@@ -90,14 +94,24 @@ class EditPhotoViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun updatePhoto(path: Uri) {
+    private fun updatePhoto(path: List<Uri>, isCrop: Boolean, position: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d(TAG, "updatePhoto path $path")
-            mutableState.emit(
-                mutableState.value.copy(
-                    path = path
+            if (!isCrop) {
+                Log.d(TAG, "updatePhoto path $path")
+                mutableState.emit(
+                    mutableState.value.copy(
+                        listPath = path
+                    )
                 )
-            )
+            } else {
+                val currentList = mutableState.value.listPath?.toMutableList()
+                currentList?.set(position, path.first())
+                mutableState.emit(
+                    mutableState.value.copy(
+                        listPath = currentList
+                    )
+                )
+            }
         }
     }
 }

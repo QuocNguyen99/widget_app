@@ -67,8 +67,8 @@ class MainActivity : ComponentActivity() {
 //                    modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    WidgetApp()
-                    SubComposeLayoutDemo()
+                    WidgetApp()
+//                    SubComposeLayoutDemo()
                 }
             }
         }
@@ -191,7 +191,11 @@ class MorphPolygonShape(
 
     private val matrix = Matrix()
 
-    override fun createOutline(size: androidx.compose.ui.geometry.Size, layoutDirection: LayoutDirection, density: Density): Outline {
+    override fun createOutline(
+        size: androidx.compose.ui.geometry.Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
         matrix.scale(size.width / 2f, size.height / 2f)
         matrix.translate(1f, 1f)
 

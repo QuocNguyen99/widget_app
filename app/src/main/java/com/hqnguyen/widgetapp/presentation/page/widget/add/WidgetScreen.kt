@@ -6,15 +6,9 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
 import android.util.Log
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,11 +20,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -43,37 +34,23 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.toColorInt
-import androidx.glance.GlanceId
-import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import coil.Coil
-import coil.imageLoader
-import coil.request.ImageRequest
-import coil.request.SuccessResult
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.bumptech.glide.Glide
 import com.hqnguyen.widgetapp.data.model.WidgetInfo
 import com.hqnguyen.widgetapp.presentation.custom.AppBar
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
 import com.hqnguyen.widgetapp.utils.loadImageAndSaveToCache
 import com.hqnguyen.widgetapp.utils.openPhotoPicker
-import com.hqnguyen.widgetapp.widget_glance.EventWidgetApp
 import com.hqnguyen.widgetapp.widget_glance.EventWidgetPinnedReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileOutputStream
 
-@OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddWidgetScreen(
     viewModel: WidgetViewModel = hiltViewModel(),
@@ -86,13 +63,9 @@ fun AddWidgetScreen(
     val state by viewModel.state.collectAsState()
     val configuration = LocalConfiguration.current
     val pickMedia =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                Log.d("PhotoPicker", "Selected URI: $uri")
-                viewModel.handleEvents(WidgetEvent.UpdateBackground(uri))
-            } else {
-                Log.e("PhotoPicker", "No media selected")
-            }
+        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uri ->
+            Log.d("PhotoPicker", "Selected URI: $uri")
+            viewModel.handleEvents(WidgetEvent.UpdateBackground(uri.first()))
         }
 
     val screenWidth = configuration.screenWidthDp.dp

@@ -1,12 +1,11 @@
 package com.hqnguyen.widgetapp.presentation.page.photo
 
 import android.net.Uri
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 data class EditPhotoState(
-    val path: Uri? = null,
+    val listPath: List<Uri>? = null,
     val size: Int = 2,
     val positionX: Int = -1,
     val positionY: Int = -1,

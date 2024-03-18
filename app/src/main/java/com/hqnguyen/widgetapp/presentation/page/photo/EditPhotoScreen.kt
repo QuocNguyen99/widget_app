@@ -1,13 +1,11 @@
 package com.hqnguyen.widgetapp.presentation.page.photo
 
 import android.graphics.ImageDecoder
-import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,14 +45,16 @@ fun EditPhotoScreen(
 
     val state by viewModel.state.collectAsState()
 
+    var colorList by remember { mutableStateOf(mutableListOf<List<Color>>()) }
+    var currentImageDisplay by remember {
+        mutableIntStateOf(0)
+    }
+
     val pickMedia =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uri ->
             Log.d("EditPhotoScreen", "Selected URI: $uri")
-            uri?.let {
-                viewModel.handleEvents(EditPhotoEvent.UpdatePhoto(it))
-                return@rememberLauncherForActivityResult
-            }
-            Log.e("EditPhotoScreen", "No media selected")
+            viewModel.handleEvents(EditPhotoEvent.UpdatePhoto(uri))
+            return@rememberLauncherForActivityResult
         }
 
     val imageCropLauncher =
@@ -68,7 +69,7 @@ fun EditPhotoScreen(
                     }
 
                     Log.d("TAG", "EditPhotoScreen: bitmap ${bitmap.width}")
-                    viewModel.handleEvents(EditPhotoEvent.UpdatePhoto(it))
+                    viewModel.handleEvents(EditPhotoEvent.UpdatePhoto(listOf(it), true, currentImageDisplay))
                     viewModel.handleEvents(EditPhotoEvent.UpdateCropType(-1))
                 }
             } else {
@@ -77,7 +78,7 @@ fun EditPhotoScreen(
             }
         }
 
-    var colorList by remember { mutableStateOf(mutableListOf<List<Color>>()) }
+
 
     LaunchedEffect(key1 = Unit, block = {
         colorList = randomColor()
@@ -85,7 +86,10 @@ fun EditPhotoScreen(
 
     if (state.cropType == 2) {
         val cropOptions =
-            CropImageContractOptions(state.path, CropImageOptions(imageSourceIncludeCamera = false))
+            CropImageContractOptions(
+                state.listPath?.get(currentImageDisplay),
+                CropImageOptions(imageSourceIncludeCamera = false)
+            )
         imageCropLauncher.launch(cropOptions)
     } else
         Scaffold(
@@ -103,16 +107,18 @@ fun EditPhotoScreen(
             ) {
                 CardPhoto(
                     screenWidth,
-                    path = state.path,
+                    listPath = state.listPath,
                     indexSizeList = state.size,
                     indexShape = state.shapeIndex,
                     cropType = state.cropType,
                     borderColor = if (state.borderColor == -1) listOf(Color.Transparent) else colorList[state.borderColor],
                     cornerSize = state.cornerSize,
-                    openMedia = { openPhotoPicker(pickMedia) })
+                    openMedia = { openPhotoPicker(pickMedia) },
+                    updateCurrentImageDisplay = { page -> currentImageDisplay = page }
+                )
 
                 EditPhotoLayout(
-                    path = state.path,
+                    listPath = state.listPath,
                     indexSize = state.size,
                     indexShape = state.shapeIndex,
                     screenWidth = screenWidth,
