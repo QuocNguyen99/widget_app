@@ -27,6 +27,7 @@ import com.hqnguyen.widgetapp.presentation.page.photo.edit.CornerEdit
 import com.hqnguyen.widgetapp.presentation.page.photo.edit.CropEdit
 import com.hqnguyen.widgetapp.presentation.page.photo.edit.FrameEdit
 import com.hqnguyen.widgetapp.presentation.page.photo.edit.ShapeEdit
+import com.hqnguyen.widgetapp.presentation.page.photo.edit.TimeIntervalEdit
 import com.hqnguyen.widgetapp.presentation.page.widget.add.item.SizeEdit
 import es.dmoral.toasty.Toasty
 
@@ -71,8 +72,14 @@ fun EditPhotoLayout(
                     return@SizeEdit
                 }
                 updateSize(it)
-//                updateShape(0)
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            if (listPath != null && listPath.size > 1) {
+                TimeIntervalEdit {
+                }
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             CropEdit {
@@ -107,18 +114,6 @@ fun EditPhotoLayout(
                 updateCorner(it)
             }
             Spacer(modifier = Modifier.height(16.dp))
-
-
-//                ShapeEdit(indexShape = indexShape) {
-//                    if (listPath == null) {
-//                        Toasty.info(context, messageChoose, Toast.LENGTH_SHORT, true)
-//                            .show()
-//                        return@ShapeEdit
-//                    }
-//
-//                    updateShape(it)
-//                }
-//                Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }

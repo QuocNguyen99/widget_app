@@ -88,36 +88,41 @@ fun CardPhoto(
             elevation = CardDefaults.cardElevation(8.dp),
             modifier = Modifier
                 .padding(16.dp)
-                .width(screenWidth / listCards[indexSizeList].height + 16.dp)
-                .height(screenWidth / listCards[indexSizeList].width + 16.dp)
                 .clickable {
                     openMedia()
                 },
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.default_img),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                alpha = 0.4f,
-                alignment = Alignment.Center,
+            Column(
                 modifier = Modifier
-                    .width(screenWidth / 12)
-                    .height(screenWidth / 12)
-            )
+                    .width(screenWidth / listCards[indexSizeList].height)
+                    .height(screenWidth / listCards[indexSizeList].width),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.default_img),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    alpha = 0.4f,
+                    alignment = Alignment.Center,
+                    modifier = Modifier
+                        .width(screenWidth / 12)
+                        .height(screenWidth / 12)
+                )
+            }
         }
     } else {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
-                .padding(0.dp, vertical = 16.dp)
-                .width(screenWidth / listCards[indexSizeList].height + 16.dp)
-                .height(screenWidth / listCards[indexSizeList].width + 16.dp)
+                .width(screenWidth / listCards[indexSizeList].height + 36.dp)
+                .height(screenWidth / listCards[indexSizeList].width + 36.dp)
         ) { page ->
             Card(
-                shape = RoundedCornerShape(cornerSize),
-                elevation = CardDefaults.cardElevation(8.dp),
                 modifier = Modifier
                     .padding(16.dp),
+                shape = RoundedCornerShape(cornerSize),
+                elevation = CardDefaults.cardElevation(8.dp),
                 border = if (borderColor.isEmpty()) null else {
                     if (borderColor.size == 1) BorderStroke(
                         2.dp,
@@ -135,7 +140,7 @@ fun CardPhoto(
                                 .width(4.dp)
                                 .height(4.dp)
                                 .padding(32.dp),
-                            color = Color.Blue,
+                            color = Color.DarkGray,
                             trackColor = Color.Gray,
                         )
                     },
@@ -147,14 +152,16 @@ fun CardPhoto(
             }
         }
 
-        DotsIndicator(
-            totalDots = listPath.size,
-            selectedIndex = pagerState.currentPage,
-            selectedColor = Color.Blue,
-            unSelectedColor = Color.Red
-        )
+        if (listPath.size > 1) {
+            DotsIndicator(
+                totalDots = listPath.size,
+                selectedIndex = pagerState.currentPage,
+                selectedColor = Color.Black,
+                unSelectedColor = Color.Gray
+            )
 
-        Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.padding(8.dp))
+        }
     }
 }
 
