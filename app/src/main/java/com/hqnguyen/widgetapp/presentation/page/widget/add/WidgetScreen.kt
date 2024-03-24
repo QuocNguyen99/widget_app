@@ -3,10 +3,13 @@ package com.hqnguyen.widgetapp.presentation.page.widget.add
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetProvider
 import android.appwidget.AppWidgetProviderInfo
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.widget.RemoteViews
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -20,7 +23,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,6 +43,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.hqnguyen.widgetapp.R
 import com.hqnguyen.widgetapp.data.model.WidgetInfo
 import com.hqnguyen.widgetapp.presentation.custom.AppBar
 import com.hqnguyen.widgetapp.ui.theme.WidgetAppTheme
@@ -197,8 +200,42 @@ private fun AppWidgetProviderInfo.pin(context: Context) {
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
-    AppWidgetManager.getInstance(context).requestPinAppWidget(provider, null, successCallback)
+    AppWidgetManager.getInstance(context).requestPinAppWidget(ComponentName(context.packageName, MyWidgetProvider::class.java.name), null, successCallback)
+
+    val pinnedWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(provider)
+//
+//    if (pinnedWidgetIds.isNotEmpty()) {
+//        val remoteViewsToUse = RemoteViews(context.packageName, R.layout.widget_initial_layout_4_4)
+//        val lastWidgetId = pinnedWidgetIds.last()
+//        // Xử lý WidgetId tại đây
+//        Log.d("TAG", "pinnedWidgetIds: $lastWidgetId")
+//
+//        AppWidgetManager.getInstance(context).updateAppWidget(lastWidgetId, remoteViewsToUse)
+//
+//    } else {
+//
+//    }
 }
+
+class MyWidgetProvider : AppWidgetProvider() {
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        // Cập nhật giao diện Widget
+        val remoteViews = RemoteViews(context.packageName, R.layout.widget_initial_layout_4_4)
+        appWidgetManager.updateAppWidget(appWidgetIds, remoteViews)
+    }
+
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+        // Xử lý sự kiện Widget
+//        if (intent.action == AppWidgetManager.CL) {
+//            val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
+//            if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+//                // Xử lý click cho Widget
+//            }
+//        }
+    }
+}
+
 
 @Preview
 @Composable

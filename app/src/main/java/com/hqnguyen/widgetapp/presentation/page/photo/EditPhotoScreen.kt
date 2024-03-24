@@ -166,6 +166,9 @@ fun EditPhotoScreen(
                                 index
                             )
                         )
+                    },
+                    addWidget = {
+                        viewModel.handleEvents(EditPhotoEvent.AddWidget)
                     }
                 )
             }

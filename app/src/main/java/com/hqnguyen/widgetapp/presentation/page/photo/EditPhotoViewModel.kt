@@ -37,7 +37,12 @@ class EditPhotoViewModel @Inject constructor() : ViewModel() {
             is EditPhotoEvent.UpdateCorner -> updateCorner(event.cornerSize)
             is EditPhotoEvent.UpdateShape -> updateShape(event.index)
             is EditPhotoEvent.UpdateTimeInterval -> updateTimeInterval(event.index)
+            is EditPhotoEvent.AddWidget -> addWidget()
         }
+    }
+
+    private fun addWidget() {
+
     }
 
     private fun updateTimeInterval(index: Int) {
