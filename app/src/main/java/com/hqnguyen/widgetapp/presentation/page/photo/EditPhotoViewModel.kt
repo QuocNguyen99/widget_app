@@ -36,6 +36,18 @@ class EditPhotoViewModel @Inject constructor() : ViewModel() {
             is EditPhotoEvent.UpdateBorderColor -> updateBorderColor(event.borderPosition)
             is EditPhotoEvent.UpdateCorner -> updateCorner(event.cornerSize)
             is EditPhotoEvent.UpdateShape -> updateShape(event.index)
+            is EditPhotoEvent.UpdateTimeInterval -> updateTimeInterval(event.index)
+        }
+    }
+
+    private fun updateTimeInterval(index: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "updateTimeInterval index $index")
+            mutableState.emit(
+                mutableState.value.copy(
+                    timeInterval = index
+                )
+            )
         }
     }
 

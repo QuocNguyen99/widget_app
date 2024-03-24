@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.hqnguyen.widgetapp.presentation.page.photo.edit.CornerEdit
 import com.hqnguyen.widgetapp.presentation.page.photo.edit.CropEdit
 import com.hqnguyen.widgetapp.presentation.page.photo.edit.FrameEdit
-import com.hqnguyen.widgetapp.presentation.page.photo.edit.ShapeEdit
 import com.hqnguyen.widgetapp.presentation.page.photo.edit.TimeIntervalEdit
 import com.hqnguyen.widgetapp.presentation.page.widget.add.item.SizeEdit
 import es.dmoral.toasty.Toasty
@@ -38,13 +37,15 @@ fun EditPhotoLayout(
     listPath: List<Uri>? = null,
     indexSize: Int = 0,
     indexShape: Int = 0,
+    indexIntervalTime: Int = 0,
     screenWidth: Dp,
-    colorList: MutableList<List<Color>>,
+    colorList: List<List<Color>>,
     updateSize: (size: Int) -> Unit,
     updateCropType: (cropType: Int) -> Unit,
     updateBorderColor: (borderPosition: Int) -> Unit,
     updateCorner: (cornerSize: Dp) -> Unit,
     updateShape: (index: Int) -> Unit,
+    updateTimeInterval: (index: Int) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -75,8 +76,12 @@ fun EditPhotoLayout(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
             if (listPath != null && listPath.size > 1) {
-                TimeIntervalEdit {
+                TimeIntervalEdit(
+                    selectedIndex = indexIntervalTime,
+                ) {
+                    updateTimeInterval(it)
                 }
             }
 

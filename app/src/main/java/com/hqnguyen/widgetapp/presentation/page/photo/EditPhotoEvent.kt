@@ -19,4 +19,5 @@ sealed class EditPhotoEvent {
     data class UpdateBorderColor(val borderPosition: Int) : EditPhotoEvent()
     data class UpdateCorner(val cornerSize: Dp) : EditPhotoEvent()
     data class UpdateShape(val index: Int) : EditPhotoEvent()
+    data class UpdateTimeInterval(val index: Int) : EditPhotoEvent()
 }

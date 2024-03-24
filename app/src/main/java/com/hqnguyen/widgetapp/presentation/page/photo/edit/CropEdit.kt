@@ -1,5 +1,7 @@
 package com.hqnguyen.widgetapp.presentation.page.photo.edit
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun CropEdit(updateCropType: (cropType: Int) -> Unit) {
+fun CropEdit(selectedIndex: Int = 0, updateCropType: (cropType: Int) -> Unit) {
     val listCrop = listOf("Center Fit", "Center Crop", "Custom Crop")
     Text(
         text = "Crop",
@@ -41,8 +43,9 @@ fun CropEdit(updateCropType: (cropType: Int) -> Unit) {
     ) {
         items(count = listCrop.size) {
             ElevatedCard(
+                onClick = { updateCropType(it) },
                 colors = CardColors(
-                    containerColor = Color.White,
+                    containerColor = if (selectedIndex == it) Color(0xFF6ac5fe) else Color.White,
                     contentColor = Color.Black,
                     disabledContainerColor = Color.White,
                     disabledContentColor = Color.White
@@ -52,9 +55,6 @@ fun CropEdit(updateCropType: (cropType: Int) -> Unit) {
                     pressedElevation = 6.dp
                 ),
                 shape = RoundedCornerShape(36.dp),
-                modifier = Modifier.clickable {
-                    updateCropType(it)
-                }
             ) {
                 Text(
                     text = listCrop[it],

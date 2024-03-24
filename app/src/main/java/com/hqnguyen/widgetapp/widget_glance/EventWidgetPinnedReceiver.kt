@@ -8,10 +8,10 @@ import android.widget.Toast
 
 class EventWidgetPinnedReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d("TAG", "onReceiveeee: intent ${intent?.data} -- ${intent?.action}")
+        Log.d("TAG", "onReceive: intent ${intent?.data} -- ${intent?.action}")
         Toast.makeText(
             context,
-            "Widget pinned. Go to homescreen.",
+            "Widget pinned. Go to home screen.",
             Toast.LENGTH_SHORT
         ).show()
     }

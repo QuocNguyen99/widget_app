@@ -25,7 +25,6 @@ val listCards = listOf(
     CardDefault(4, 2),
     CardDefault(4, 4),
 )
-
 @Composable
 fun SizeEdit(indexSize: Int, onClickCardSize: (index: Int) -> Unit) {
     Text(

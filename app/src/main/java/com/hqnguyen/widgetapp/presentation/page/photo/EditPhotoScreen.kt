@@ -45,7 +45,7 @@ fun EditPhotoScreen(
 
     val state by viewModel.state.collectAsState()
 
-    var colorList by remember { mutableStateOf(mutableListOf<List<Color>>()) }
+    var colorList by remember { mutableStateOf(listOf<List<Color>>()) }
     var currentImageDisplay by remember {
         mutableIntStateOf(0)
     }
@@ -53,8 +53,10 @@ fun EditPhotoScreen(
     val pickMedia =
         rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uri ->
             Log.d("EditPhotoScreen", "Selected URI: $uri")
-            viewModel.handleEvents(EditPhotoEvent.UpdatePhoto(uri))
+            if (uri.isNotEmpty())
+                viewModel.handleEvents(EditPhotoEvent.UpdatePhoto(uri))
             return@rememberLauncherForActivityResult
+
         }
 
     val imageCropLauncher =
@@ -69,7 +71,13 @@ fun EditPhotoScreen(
                     }
 
                     Log.d("TAG", "EditPhotoScreen: bitmap ${bitmap.width}")
-                    viewModel.handleEvents(EditPhotoEvent.UpdatePhoto(listOf(it), true, currentImageDisplay))
+                    viewModel.handleEvents(
+                        EditPhotoEvent.UpdatePhoto(
+                            listOf(it),
+                            true,
+                            currentImageDisplay
+                        )
+                    )
                     viewModel.handleEvents(EditPhotoEvent.UpdateCropType(-1))
                 }
             } else {
@@ -77,8 +85,6 @@ fun EditPhotoScreen(
                 viewModel.handleEvents(EditPhotoEvent.UpdateCropType(0))
             }
         }
-
-
 
     LaunchedEffect(key1 = Unit, block = {
         colorList = randomColor()
@@ -114,6 +120,7 @@ fun EditPhotoScreen(
                     borderColor = if (state.borderColor == -1) listOf(Color.Transparent) else colorList[state.borderColor],
                     cornerSize = state.cornerSize,
                     openMedia = { openPhotoPicker(pickMedia) },
+
                     updateCurrentImageDisplay = { page -> currentImageDisplay = page }
                 )
 
@@ -121,6 +128,7 @@ fun EditPhotoScreen(
                     listPath = state.listPath,
                     indexSize = state.size,
                     indexShape = state.shapeIndex,
+                    indexIntervalTime = state.timeInterval,
                     screenWidth = screenWidth,
                     colorList = colorList,
                     updateSize = { size -> viewModel.handleEvents(EditPhotoEvent.UpdateSize(size)) },
@@ -148,6 +156,13 @@ fun EditPhotoScreen(
                     updateShape = { index ->
                         viewModel.handleEvents(
                             EditPhotoEvent.UpdateShape(
+                                index
+                            )
+                        )
+                    },
+                    updateTimeInterval = { index ->
+                        viewModel.handleEvents(
+                            EditPhotoEvent.UpdateTimeInterval(
                                 index
                             )
                         )

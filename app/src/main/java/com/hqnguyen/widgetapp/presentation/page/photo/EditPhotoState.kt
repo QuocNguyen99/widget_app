@@ -14,5 +14,6 @@ data class EditPhotoState(
     val borderColor: Int = -1,
     val cropType: Int = 0,
     val cornerSize: Dp = 16.dp,
-    val shapeIndex:Int = 0
+    val shapeIndex: Int = 0,
+    val timeInterval: Int = 0
 )

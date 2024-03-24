@@ -84,13 +84,11 @@ fun CardPhoto(
 
     if (listPath.isNullOrEmpty()) {
         Card(
+            onClick = { openMedia() },
             shape = RoundedCornerShape(cornerSize),
             elevation = CardDefaults.cardElevation(8.dp),
             modifier = Modifier
                 .padding(16.dp)
-                .clickable {
-                    openMedia()
-                },
         ) {
             Column(
                 modifier = Modifier
